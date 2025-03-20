@@ -1,0 +1,6 @@
+C:\Users\Admin\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.csproj.AssemblyReference.cache
+C:\Users\Admin\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.AssemblyInfoInputs.cache
+C:\Users\Admin\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.AssemblyInfo.cs
+C:\Users\Admin\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.sourcelink.json
