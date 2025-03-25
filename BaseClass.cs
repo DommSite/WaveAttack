@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace WaveAttack
 {
     public abstract class BaseClass{
-        protected Vector2   position;
+        public Vector2   position{get; set;}
         protected Texture2D texture;
         
         public bool isActive{get; set;} = true;

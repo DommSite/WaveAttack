@@ -48,8 +48,19 @@ namespace WaveAttack
                     stamina++;
                 }
             }
-            direction.Normalize();
+            if(direction !=Vector2.Zero){
+                direction.Normalize();
+            }
+        
+            //attacksaken här
+
+
             position += direction*speed;
+
+
+
+
+
         }
 
         public override void Update(GameTime gameTime)
@@ -60,9 +71,7 @@ namespace WaveAttack
 
         }
 
+        
 
     }
-
-
-
-    }
+}
