@@ -8,7 +8,7 @@ namespace WaveAttack
         protected Texture2D texture;
         
         public bool isActive{get; set;} = true;
-        
+        public Rectangle hitBox => new((int)position.X, (int)position.Y, texture.Width, texture.Height);       
 
         public BaseClass(Texture2D texture, Vector2 position)
         {
@@ -16,9 +16,7 @@ namespace WaveAttack
             this.position = position;
         }
 
-        public virtual void Update(GameTime gameTime){
-            
-        }
+        public abstract void Update(GameTime gameTime);
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {

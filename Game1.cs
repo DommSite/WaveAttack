@@ -25,7 +25,7 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-
+        GameManager.Instance.Initialize(this);
         base.Initialize();
     }
 
@@ -34,7 +34,10 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // TODO: use this.Content to load your game content here
-        Texture2D pixel;
+        GameManager.Instance.LoadContent(Content);
+
+
+        /*Texture2D pixel;
         Texture2D bullet;
         Texture2D player;
 
@@ -47,7 +50,7 @@ public class Game1 : Game
         player = Content.Load<Texture2D>("Red_Arrow_Left");
 
         entities.Add(new Player(player));
-        entities.Add(new Enemy(pixel, new Vector2(400,380), entities));
+        entities.Add(new Enemy(pixel, new Vector2(400,380), entities));*/
     }
 
     protected override void Update(GameTime gameTime)
@@ -56,10 +59,14 @@ public class Game1 : Game
             Exit();
 
         // TODO: Add your update logic here
+
+        GameManager.Instance.Update(gameTime);
+        /*
         foreach(var entity in entities){
             entity.Update();
         }
-        BulletSystem.Instance.Update();
+        BulletSystem.Instance.Update();*/
+
         base.Update(gameTime);
     }
 
@@ -69,11 +76,12 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
         _spriteBatch.Begin();
-
+        GameManager.Instance.Draw(_spriteBatch);
+        /*
         foreach(var entity in entities){
             entity.Draw(_spriteBatch);
         }
-        BulletSystem.Instance.Draw(_spriteBatch);
+        BulletSystem.Instance.Draw(_spriteBatch);*/
 
         _spriteBatch.End();
         base.Draw(gameTime);

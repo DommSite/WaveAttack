@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -23,6 +24,26 @@ namespace WaveAttack
             {
                 isActive = false;
             }
+
+            CheckCollision();
+        }
+
+        private void CheckCollision(){
+            if(isEnemyProjectile){
+                if(GameManager.Instance.player.hitBox.Intersects(hitBox)){
+                    GameManager.Instance.player.TakeDamage(damage);
+                    isActive = false;
+                }
+            }
+
+            foreach(var enemy in GameManager.Instance.enemies){
+                if(enemy.hitBox.Intersects(hitBox)){
+                    enemy.TakeDamage(damage);
+                    isActive = false;
+                    break;
+                }
+            }
+
         }
     }
 }

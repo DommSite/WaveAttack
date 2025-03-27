@@ -17,11 +17,14 @@ namespace WaveAttack
         public void TakeDamage(int damage){
             health -= damage;
             if(health <= 0){
-                isActive = false;
+                health = 0;
+                Die();
             }
         }
+        public abstract void Die();
 
         public abstract void Move(GameTime gameTime);
+        public abstract void Attack(GameTime gameTime);
 
     }
 }
