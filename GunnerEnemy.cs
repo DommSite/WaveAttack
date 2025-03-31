@@ -6,13 +6,11 @@ namespace WaveAttack
 {
     public class GunnerEnemy : BaseEnemy
     {
-        private Texture2D bulletTexture;
         private TimeSpan fireCooldown = TimeSpan.FromSeconds(2);
         private TimeSpan timeSinceLastShot = TimeSpan.Zero;
 
-        public GunnerEnemy(Texture2D texture, Texture2D bulletTexture, Vector2 position) : base(texture, position, 30, 1f)
+        public GunnerEnemy(Vector2 position) : base(SpriteManager.GetTexture("EnemySniper"), position, 30, 1f)
         {
-            this.bulletTexture = bulletTexture;
             wantedDistanceFromPlayer = 150;
         }
 

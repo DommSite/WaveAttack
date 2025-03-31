@@ -20,7 +20,9 @@ namespace WaveAttack
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            if(isActive){
+                spriteBatch.Draw(texture, position, Color.White);
+            }
         }
     }       
 }

@@ -11,8 +11,8 @@ namespace WaveAttack
         private TimeSpan lastAttackTime = TimeSpan.Zero;
         
 
-        public StandardEnemy(Texture2D texture, Vector2 position, Player player)
-            : base(texture, position, 50, 2f)
+        public StandardEnemy(Vector2 position, Player player)
+            : base(SpriteManager.GetTexture("EnemyStandard"), position, 50, 2f)
         {
             this.player = player;
             wantedDistanceFromPlayer = 15;
@@ -42,8 +42,7 @@ namespace WaveAttack
             }
         }
 
-        public override void Die(){
-            isActive = false;
-        }
+        /*public override void Die(){
+        }*/
     }
 }

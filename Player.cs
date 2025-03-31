@@ -13,19 +13,10 @@ namespace WaveAttack
         private List<Weapon> inventory = new List<Weapon>();
         
         private MouseState oldState;
-        public Texture2D swordTexture;
-        public Texture2D bigSwordTexture;
-        public Texture2D gunTexture;
-        public Texture2D bulletTexture;
+    
+        public Player( Vector2 position) : base(SpriteManager.GetTexture("Player"), position, 100, 5f){
 
-
-        public Player(Texture2D texture, Vector2 position, Texture2D swordTexture, Texture2D bigSwordTexture, Texture2D gunTexture, Texture2D bulletTexture) : base(texture, position, 100, 5f){
-            this.swordTexture = swordTexture;
-            this.bigSwordTexture = bigSwordTexture;
-            this.gunTexture = gunTexture;
-            this.bulletTexture = bulletTexture;
-
-            currentWeapon = new Sword(this.swordTexture);
+            currentWeapon = new Sword(SpriteManager.GetTexture("Sword"));
             inventory.Add(currentWeapon);
         }
 
@@ -93,6 +84,7 @@ namespace WaveAttack
             }
             position += direction*speed;
         }
+        
 
         public override void Die(){
             //you ded boi

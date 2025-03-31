@@ -25,8 +25,9 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-        GameManager.Instance.Initialize(this);
         base.Initialize();
+        GameManager.Instance.Initialize(this);
+        
     }
 
     protected override void LoadContent()

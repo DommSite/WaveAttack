@@ -8,8 +8,11 @@ namespace WaveAttack
         protected Player player;
         protected float distanceFromPlayer;
         protected float wantedDistanceFromPlayer;
-        public BaseEnemy(Texture2D texture, Vector2 position, int health, float speed)
+        public abstract BaseEnemy(Texture2D texture, Vector2 position, int health, float speed)
         : base(texture, position, health, speed){
+        }
+        public override void Die(){
+            isActive = false;
         }
 
 

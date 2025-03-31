@@ -5,9 +5,7 @@ namespace WaveAttack
 {
     public class Flintlock : Weapon
     {
-        private Texture2D bulletTexture;
-        public Flintlock(Texture2D texture, Texture2D bulletTexture) : base("Flintlock", 40, 2f, texture){
-            this.bulletTexture = bulletTexture;
+        public Flintlock() : base("Flintlock", 40, 2f, SpriteManager.GetTexture("Flintlock")){
         }
 
         public override void Use(Player player){

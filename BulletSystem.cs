@@ -37,7 +37,6 @@ namespace WaveAttack
                 }*/
             }      
         
-
         public virtual void Update(){
             foreach(var Bullet in bullets){
                 Bullet.Update();

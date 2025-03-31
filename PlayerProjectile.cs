@@ -5,7 +5,7 @@ namespace WaveAttack
 {
     public class PlayerProjectile : BaseProjectile
     {
-        public PlayerProjectile(Texture2D texture, Vector2 position, Vector2 direction, int damage)
-        : base(texture, position, direction, damage, isEnemyProjectile: false) { }
+        public PlayerProjectile(Vector2 position, Vector2 direction, int damage)
+        : base(SpriteManager.GetTexture("ProjectileBullet"), position, direction, damage, isEnemyProjectile: false) { }
     }
 }

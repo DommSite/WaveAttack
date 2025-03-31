@@ -4,21 +4,25 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WaveAttack
 {
-    public abstract class BaseProjectile : BaseClass
+    public class BaseProjectile : BaseClass
     {
-        protected Vector2 velocity;
+        protected Vector2 direction;
         protected int damage {get; private set;}
         protected bool isEnemyProjectile {get; private set;}
         float speedProjectile = 10f;
-        public BaseProjectile(Texture2D texture, Vector2 position, Vector2 direction, int damage, bool isEnemyProjectile):base(texture, position){
-            this.velocity = direction * speedProjectile;
+        protected float rotation;
+
+        public BaseProjectile(Vector2 position, Vector2 direction, int damage, bool isEnemyProjectile):base(SpriteManager.GetTexture("ProjectileBullet"), position){
+            this.direction = direction.Normalize();
             this.damage = damage;
             this.isEnemyProjectile = isEnemyProjectile;
+            direction.Normalize;
+            Rotation = (float)Math.Atan2(Direction.Y, Direction.X);
         }
 
         public override void Update(GameTime gameTime)
         {
-            position += velocity;
+            position += direction * speedProjectile * (float)gameTime.ElapsedGameTime.TotalSeconds;;
 
             if (position.X < 0 || position.X > 800 || position.Y < 0 || position.Y > 600)
             {
@@ -44,6 +48,14 @@ namespace WaveAttack
                 }
             }
 
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if (IsActive)
+            {
+                spriteBatch.Draw(texture, position, null, Color.White, rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1.0f, SpriteEffects.None, 0f);
+            }
         }
     }
 }

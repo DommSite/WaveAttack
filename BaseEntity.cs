@@ -26,5 +26,10 @@ namespace WaveAttack
         public abstract void Move(GameTime gameTime);
         public abstract void Attack(GameTime gameTime);
 
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+        }
+
     }
 }
