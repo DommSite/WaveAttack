@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -35,7 +35,7 @@ namespace WaveAttack
                     particles.RemoveAt(i);
                     i--;
                 }*/
-            }      
+        /* }      
         
         public virtual void Update(){
             foreach(var Bullet in bullets){
@@ -51,4 +51,4 @@ namespace WaveAttack
             }
         }
     }
-}
+}*/

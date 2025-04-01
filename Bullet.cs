@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -40,10 +40,10 @@ namespace WaveAttack
             Vector2   scale;
             scale.X = 0.1f;
             scale.Y = 0.1f;
-            spriteBatch.Draw(bulletImage, position, sourceRectangle,Color.White, (float)((Math.Atan2(direction.Y,direction.X))/*+((float)(Math.PI)/2f)*/), position/2, scale,SpriteEffects.None,1);
+            spriteBatch.Draw(bulletImage, position, sourceRectangle,Color.White, (float)((Math.Atan2(direction.Y,direction.X))/*+((float)(Math.PI)/2f)*//*), position/2, scale,SpriteEffects.None,1);
         }
 
 
 
     }
-}
+}*/

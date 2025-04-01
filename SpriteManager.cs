@@ -9,7 +9,6 @@ namespace WaveAttack
     public static class SpriteManager
     {
         private static Dictionary<string, Texture2D> textures = new();
-
         public static void LoadContent(ContentManager content)
             {
                 textures["Player"] = content.Load<Texture2D>("Player");
@@ -19,7 +18,6 @@ namespace WaveAttack
                 textures["Sword"] = content.Load<Texture2D>("Sword");
                 textures["Flintlock"] = content.Load<Texture2D>("Flintlock");
             }
-
         public static Texture2D GetTexture(string key) => textures[key];
-     }
+    }
 }

@@ -14,9 +14,9 @@ namespace WaveAttack
         
         private MouseState oldState;
     
-        public Player( Vector2 position) : base(SpriteManager.GetTexture("Player"), position, 100, 5f){
+        public Player(Vector2 position) : base(SpriteManager.GetTexture("Player"), position, 100, 5f){
 
-            currentWeapon = new Sword(SpriteManager.GetTexture("Sword"));
+            currentWeapon = new Sword();
             inventory.Add(currentWeapon);
         }
 

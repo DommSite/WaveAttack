@@ -1,6 +1,7 @@
-using System.Data.Common;
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 
 namespace WaveAttack
 {
@@ -13,11 +14,11 @@ namespace WaveAttack
         protected float rotation;
 
         public BaseProjectile(Vector2 position, Vector2 direction, int damage, bool isEnemyProjectile):base(SpriteManager.GetTexture("ProjectileBullet"), position){
-            this.direction = direction.Normalize();
+            this.direction = direction;
             this.damage = damage;
             this.isEnemyProjectile = isEnemyProjectile;
-            direction.Normalize;
-            Rotation = (float)Math.Atan2(Direction.Y, Direction.X);
+            this.direction.Normalize();
+            rotation = (float)Math.Atan2(direction.Y, direction.X);
         }
 
         public override void Update(GameTime gameTime)
@@ -52,7 +53,7 @@ namespace WaveAttack
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (IsActive)
+            if (isActive)
             {
                 spriteBatch.Draw(texture, position, null, Color.White, rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1.0f, SpriteEffects.None, 0f);
             }

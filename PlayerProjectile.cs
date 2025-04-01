@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+/*using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace WaveAttack
@@ -8,4 +8,4 @@ namespace WaveAttack
         public PlayerProjectile(Vector2 position, Vector2 direction, int damage)
         : base(SpriteManager.GetTexture("ProjectileBullet"), position, direction, damage, isEnemyProjectile: false) { }
     }
-}
+}*/

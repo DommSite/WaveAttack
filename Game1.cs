@@ -10,9 +10,9 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private List<BaseClass> entities = new List<BaseClass>();
-    private BulletSystem bulletSystem;
-    Texture2D bullet;
+    //private List<BaseClass> entities = new List<BaseClass>();
+    //private BulletSystem bulletSystem;
+    //Texture2D bullet;
     
 
     public Game1()
@@ -35,7 +35,7 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // TODO: use this.Content to load your game content here
-        GameManager.Instance.LoadContent(Content);
+        GameManager.Instance.LoadContent();
 
 
         /*Texture2D pixel;

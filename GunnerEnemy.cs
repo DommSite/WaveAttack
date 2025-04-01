@@ -39,7 +39,7 @@ namespace WaveAttack
             {
                 timeSinceLastShot = TimeSpan.Zero;
                 Vector2 bulletDirection = Vector2.Normalize(player.position - position);
-                GameManager.Instance.SpawnProjectile(new EnemyProjectile(bulletTexture, position, bulletDirection));              
+                //GameManager.Instance.SpawnProjectile(new EnemyProjectile(bulletTexture, position, bulletDirection));              
             }
         }
     }

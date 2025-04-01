@@ -5,24 +5,28 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 
-
 namespace WaveAttack
 {
     public class GameManager
     {
-        private static GameManager? _instance;
-        public static GameManager Instance => _instance ??= new GameManager();
+        
+        private static GameManager _instance;
+        public static GameManager Instance => _instance ?? (_instance = new GameManager());
         private List<BaseProjectile> projectiles = new();
-        private List<BaseEnemy> enemies = new();
-        public Player player { get; }
+        public List<BaseEnemy> enemies = new();
+        public Player player { get; private set;}
         private GameManager() { }
 
 
         public void Initialize(Game1 game)
         {
             SpriteManager.LoadContent(game.Content);
-            var playerTexture = game.Content.Load<Texture2D>("player");
-            player = new Player(playerTexture, new Vector2(400, 300));
+            player = new Player(new Vector2(400, 300));
+        }
+
+        public void LoadContent(){
+            
+
         }
 
         public void Update(GameTime gameTime)
@@ -32,7 +36,7 @@ namespace WaveAttack
             for (int i = enemies.Count - 1; i >= 0; i--)
             {
                 enemies[i].Update(gameTime);
-                if (!enemies[i].IsActive){
+                if (!enemies[i].isActive){
                     enemies.RemoveAt(i);
                 }              
             }
@@ -40,7 +44,7 @@ namespace WaveAttack
             for (int i = projectiles.Count - 1; i >= 0; i--)
             {
                 projectiles[i].Update(gameTime);
-                if (!projectiles[i].IsActive){
+                if (!projectiles[i].isActive){
                     projectiles.RemoveAt(i);
                 }               
             }
