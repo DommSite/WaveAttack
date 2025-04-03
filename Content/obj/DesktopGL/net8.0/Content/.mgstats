@@ -1,10 +1,1 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/johan/Documents/GitHub/WaveAttack/Content/../../../../Downloads/WeaponSlot.png","C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/WeaponSlot.xnb","TextureProcessor","Texture2DContent",193,2389,0,2002265
-"C:/Users/johan/Documents/GitHub/WaveAttack/Content/BigSword.png","C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/BigSword.xnb","TextureProcessor","Texture2DContent",500727,10240085,0,3439384
-"C:/Users/johan/Documents/GitHub/WaveAttack/Content/EnemySniper.png","C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/EnemySniper.xnb","TextureProcessor","Texture2DContent",23431,10240085,0,2830121
-"C:/Users/johan/Documents/GitHub/WaveAttack/Content/EnemyStandard.png","C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/EnemyStandard.xnb","TextureProcessor","Texture2DContent",15861,1778485,0,0612384
-"C:/Users/johan/Documents/GitHub/WaveAttack/Content/Flintlock.png","C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/Flintlock.xnb","TextureProcessor","Texture2DContent",381225,3320437,0,1176408
-"C:/Users/johan/Documents/GitHub/WaveAttack/Content/Player.png","C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/Player.xnb","TextureProcessor","Texture2DContent",61847,6381845,0,2024741
-"C:/Users/johan/Documents/GitHub/WaveAttack/Content/ProjectileBullet.png","C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/ProjectileBullet.xnb","TextureProcessor","Texture2DContent",311039,1155397,0,0526129
-"C:/Users/johan/Documents/GitHub/WaveAttack/Content/Sword.png","C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/Sword.xnb","TextureProcessor","Texture2DContent",363135,10240085,0,3102066
-"C:/Users/johan/Documents/GitHub/WaveAttack/Content/WeaponSelector.png","C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/WeaponSelector.xnb","TextureProcessor","Texture2DContent",194,2389,0,0033736

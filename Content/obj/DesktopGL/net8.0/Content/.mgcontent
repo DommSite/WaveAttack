@@ -4,7 +4,6 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/../../../../Downloads/WeaponSlot.png</File>
     <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/BigSword.png</File>
     <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/EnemySniper.png</File>
     <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/EnemyStandard.png</File>
@@ -13,9 +12,10 @@
     <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/ProjectileBullet.png</File>
     <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/Sword.png</File>
     <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/WeaponSelector.png</File>
+    <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/WeaponSlot.png</File>
   </SourceFiles>
   <DestFiles>
-    <File>WeaponSlot.png</File>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
