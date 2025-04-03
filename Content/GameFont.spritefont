@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns="http://www.microsoft.com/xna/2006/content">
+    <Asset Type="Microsoft.Xna.Framework.Content.Pipeline.Processors.FontDescription">
+        <FontName>ClassicShit</FontName>  <!-- Must match the TTF file name (without .ttf) -->
+        <Size>32</Size>  <!-- Change size as needed -->
+        <Spacing>0</Spacing>
+        <UseKerning>true</UseKerning>
+        <Style>Regular</Style>  <!-- Options: Regular, Bold, Italic -->
+        <CharacterRegions>
+            <CharacterRegion>
+                <Start> </Start>  <!-- Space character -->
+                <End>~</End>  <!-- Standard ASCII characters -->
+            </CharacterRegion>
+        </CharacterRegions>
+    </Asset>
+</XnaContent>

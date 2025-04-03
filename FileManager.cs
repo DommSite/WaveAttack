@@ -23,7 +23,7 @@ namespace WaveAttack
                 //textures["StaminaBar"] = content.Load<Texture2D>("StaminaBar");
                 textures["WeaponSlot"] = content.Load<Texture2D>("WeaponSlot");
                 textures["WeaponSelector"] = content.Load<Texture2D>("WeaponSelector");
-                fonts["HUDFont"] = content.Load<SpriteFont>("hud_font");
+                fonts["GameFont"] = content.Load<SpriteFont>("GameFont");
             }
         public static Texture2D GetTexture(string key) => textures[key];
         public static SpriteFont GetFont(string key) => fonts[key];

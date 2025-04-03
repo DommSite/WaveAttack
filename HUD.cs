@@ -23,7 +23,7 @@ namespace WaveAttack
             Vector2 startPosition = new Vector2(20,20);
             Vector2 weaponPosition = new Vector2(startPosition.X, startPosition.Y + 60);
             inventory = player.GetWeapons();
-            font = FileManager.GetFont("HUDFont");
+            font = FileManager.GetFont("GameFont");
             weaponSlotSize = 32;
 
 

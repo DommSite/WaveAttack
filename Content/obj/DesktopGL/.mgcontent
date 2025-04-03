@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>c:/Users/johan/Documents/GitHub/WaveAttack/Content/../../../../Downloads/WeaponSlot.png</File>
+    <File>c:/Users/johan/Documents/GitHub/WaveAttack/Content/BigSword.png</File>
+    <File>c:/Users/johan/Documents/GitHub/WaveAttack/Content/EnemySniper.png</File>
+    <File>c:/Users/johan/Documents/GitHub/WaveAttack/Content/EnemyStandard.png</File>
+    <File>c:/Users/johan/Documents/GitHub/WaveAttack/Content/Flintlock.png</File>
+    <File>c:/Users/johan/Documents/GitHub/WaveAttack/Content/Player.png</File>
+    <File>c:/Users/johan/Documents/GitHub/WaveAttack/Content/ProjectileBullet.png</File>
+    <File>c:/Users/johan/Documents/GitHub/WaveAttack/Content/Sword.png</File>
+    <File>c:/Users/johan/Documents/GitHub/WaveAttack/Content/WeaponSelector.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File>WeaponSlot.png</File>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>
