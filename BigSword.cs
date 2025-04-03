@@ -5,7 +5,7 @@ namespace WaveAttack
 {
     public class BigSword : Weapon
     {
-        public BigSword() : base("BigSword", 20, 1.2f, SpriteManager.GetTexture("BigSword")){
+        public BigSword() : base("BigSword", 20, 1.2f, FileManager.GetTexture("BigSword"),2){
 
         }
 

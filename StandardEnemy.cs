@@ -12,7 +12,7 @@ namespace WaveAttack
         
 
         public StandardEnemy(Vector2 position, Player player)
-            : base(SpriteManager.GetTexture("EnemyStandard"), position, 50, 2f)
+            : base(FileManager.GetTexture("EnemyStandard"), position, 50, 2f)
         {
             this.player = player;
             wantedDistanceFromPlayer = 15;

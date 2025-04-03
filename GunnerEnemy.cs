@@ -9,7 +9,7 @@ namespace WaveAttack
         private TimeSpan fireCooldown = TimeSpan.FromSeconds(2);
         private TimeSpan timeSinceLastShot = TimeSpan.Zero;
 
-        public GunnerEnemy(Vector2 position) : base(SpriteManager.GetTexture("EnemySniper"), position, 30, 1f)
+        public GunnerEnemy(Vector2 position) : base(FileManager.GetTexture("EnemySniper"), position, 30, 1f)
         {
             wantedDistanceFromPlayer = 150;
         }

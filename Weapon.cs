@@ -5,17 +5,19 @@ namespace WaveAttack
 {
     public abstract class Weapon
     {
-    protected Texture2D texture;
+    public Texture2D texture{get;}
     protected string name { get; }
     protected int damage { get; }
     protected float attackSpeed { get; }
+    public int weaponNumber{get;}
 
-    public Weapon(string name, int damage, float attackSpeed, Texture2D texture)
+    public Weapon(string name, int damage, float attackSpeed, Texture2D texture, int weaponNumber)
     {
         this.name = name;
         this.damage = damage;
         this.attackSpeed = attackSpeed;
         this.texture = texture;
+        this.weaponNumber = weaponNumber;
     }
 
     public abstract void Use(Player player);

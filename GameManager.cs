@@ -16,17 +16,17 @@ namespace WaveAttack
         public List<BaseEnemy> enemies = new();
         public Player player { get; private set;}
         private GameManager() { }
+        private HUD hud;
 
 
-        public void Initialize(Game1 game)
-        {
-            SpriteManager.LoadContent(game.Content);
+        public void Initialize(Game1 game, GraphicsDevice graphicsDevice)
+        { 
             player = new Player(new Vector2(400, 300));
+            hud = new HUD(player, graphicsDevice);
         }
 
-        public void LoadContent(){
-            
-
+        public void LoadContent(Game1 game){
+            FileManager.LoadContent(game.Content);
         }
 
         public void Update(GameTime gameTime)
@@ -61,6 +61,8 @@ namespace WaveAttack
             foreach (var projectile in projectiles){
                 projectile.Draw(spriteBatch);
             }      
+
+            hud.Draw(spriteBatch);
         }
 
 

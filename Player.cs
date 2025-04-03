@@ -9,13 +9,16 @@ namespace WaveAttack
     public class Player : BaseEntity
     {
         public int stamina = 100;
-        private Weapon currentWeapon;
+        public  Weapon currentWeapon {get;private set;}
         private List<Weapon> inventory = new List<Weapon>();
-        
         private MouseState oldState;
-    
-        public Player(Vector2 position) : base(SpriteManager.GetTexture("Player"), position, 100, 5f){
+        private float runSpeed;
 
+        public List<Weapon> GetWeapons(){
+            return inventory;
+        }
+    
+        public Player(Vector2 position) : base(FileManager.GetTexture("Player"), position, 100, 1f){
             currentWeapon = new Sword();
             inventory.Add(currentWeapon);
         }
@@ -48,6 +51,7 @@ namespace WaveAttack
         public override void Move(GameTime gameTime){
             KeyboardState kState = Keyboard.GetState();
             Vector2 direction = new Vector2(0,0);
+            runSpeed = speed;
             
             
 
@@ -71,7 +75,7 @@ namespace WaveAttack
             {
                 stamina--;
                 if(stamina > 0){
-                    speed = speed*2;
+                    runSpeed = speed*2;
                 }                       
             }
             else{
@@ -82,7 +86,8 @@ namespace WaveAttack
             if(direction !=Vector2.Zero){
                 direction.Normalize();
             }
-            position += direction*speed;
+            position += direction*runSpeed;
+            
         }
         
 
@@ -90,7 +95,12 @@ namespace WaveAttack
             //you ded boi
         }
 
-        
+        public override void Draw(SpriteBatch spriteBatch){
+            if (isActive)
+            {
+                spriteBatch.Draw(texture, position, null, Color.White, 0, new Vector2(texture.Width / 2, texture.Height / 2), 0.02f, SpriteEffects.None, 0f);
+            }
+        }
 
         
 

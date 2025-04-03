@@ -26,7 +26,7 @@ public class Game1 : Game
     {
         // TODO: Add your initialization logic here
         base.Initialize();
-        GameManager.Instance.Initialize(this);
+        GameManager.Instance.Initialize(this, GraphicsDevice);
         
     }
 
@@ -35,7 +35,7 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // TODO: use this.Content to load your game content here
-        GameManager.Instance.LoadContent();
+        GameManager.Instance.LoadContent(this);
 
 
         /*Texture2D pixel;

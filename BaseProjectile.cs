@@ -13,7 +13,7 @@ namespace WaveAttack
         float speedProjectile = 10f;
         protected float rotation;
 
-        public BaseProjectile(Vector2 position, Vector2 direction, int damage, bool isEnemyProjectile):base(SpriteManager.GetTexture("ProjectileBullet"), position){
+        public BaseProjectile(Vector2 position, Vector2 direction, int damage, bool isEnemyProjectile):base(FileManager.GetTexture("ProjectileBullet"), position){
             this.direction = direction;
             this.damage = damage;
             this.isEnemyProjectile = isEnemyProjectile;
