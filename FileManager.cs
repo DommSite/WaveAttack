@@ -18,9 +18,8 @@ namespace WaveAttack
                 textures["EnemySniper"] = content.Load<Texture2D>("EnemySniper");
                 textures["ProjectileBullet"] = content.Load<Texture2D>("ProjectileBullet");
                 textures["Sword"] = content.Load<Texture2D>("Sword");
+                textures["BigSword"] = content.Load<Texture2D>("BigSword");
                 textures["Flintlock"] = content.Load<Texture2D>("Flintlock");
-                //textures["HealthBar"] = content.Load<Texture2D>("HealthBar");
-                //textures["StaminaBar"] = content.Load<Texture2D>("StaminaBar");
                 textures["WeaponSlot"] = content.Load<Texture2D>("WeaponSlot");
                 textures["WeaponSelector"] = content.Load<Texture2D>("WeaponSelector");
                 fonts["GameFont"] = content.Load<SpriteFont>("GameFont");

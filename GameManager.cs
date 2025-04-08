@@ -17,6 +17,7 @@ namespace WaveAttack
         public Player player { get; private set;}
         private GameManager() { }
         private HUD hud;
+        private Random random = new Random();
 
 
         public void Initialize(Game1 game, GraphicsDevice graphicsDevice)

@@ -40,8 +40,9 @@ namespace WaveAttack
                 spriteBatch.Draw(inventory[i].texture, new Rectangle((int)weaponPosition.X + (i * 40), (int)weaponPosition.Y, weaponSlotSize, weaponSlotSize), Color.White);
 
                 // Draw selector around active weapon
-                if (i == player.currentWeapon.weaponNumber){
+                if (i == player.selectedWeaponSlot){
                     spriteBatch.Draw(FileManager.GetTexture("WeaponSelector"), new Rectangle((int)weaponPosition.X + (i * 40) - 2, (int)weaponPosition.Y - 2, weaponSlotSize+4, weaponSlotSize+4), Color.White);
+                    spriteBatch.Draw(inventory[i].texture, new Rectangle((int)weaponPosition.X + (i * 40), (int)weaponPosition.Y, weaponSlotSize+4, weaponSlotSize+4), Color.White);
                 }
             }
 

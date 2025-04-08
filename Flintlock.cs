@@ -5,7 +5,7 @@ namespace WaveAttack
 {
     public class Flintlock : Weapon
     {
-        public Flintlock() : base("Flintlock", 40, 2f, FileManager.GetTexture("Flintlock"),3){
+        public Flintlock() : base("Flintlock", 40, 2f, FileManager.GetTexture("Flintlock"),2){
         }
 
         public override void Use(Player player){

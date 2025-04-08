@@ -5,7 +5,7 @@ namespace WaveAttack
 {
     public class Sword : Weapon
     {
-        public Sword() : base("Sword", 15, 1.5f, FileManager.GetTexture("Sword"), 1){
+        public Sword() : base("Sword", 15, 1.5f, FileManager.GetTexture("Sword"), 0){
 
         }
 
