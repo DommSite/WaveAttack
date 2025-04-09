@@ -65,6 +65,8 @@ namespace WaveAttack
             } 
 
             hud.Draw(spriteBatch);
+
+            player.currentWeapon.Draw(spriteBatch);
         }
 
 

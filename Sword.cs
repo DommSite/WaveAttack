@@ -10,13 +10,17 @@ namespace WaveAttack
         float swordWidth;// = 50f;
         float swordHeight;// = 150f;
         float scale = 0.05f;
+        float rotation;
+        Vector2 direction;
+        Vector2 hitBoxCenter;
+
         public Sword() : base("Sword", 15, 1.5f, FileManager.GetTexture("Sword"), 0, 0.5f){
             swordWidth = texture.Width * scale;
             swordHeight = texture.Height * scale;
         }
 
 
-        public override void Use(GameTime gameTime, Player player, MouseState mState){
+        public override void Use(GameTime gameTime, MouseState mState){
             if(!canAttack){
                 return;
             }
@@ -24,7 +28,7 @@ namespace WaveAttack
             
             
             //Vector2 mousePosition = mState.Position.ToVector2();
-            Vector2 direction = mState.Position.ToVector2() - player.position;
+            direction = mState.Position.ToVector2() - GameManager.Instance.entities[0].position;
                    
             //Vector2 center = new Vector2(swordHitBox.X + swordHitBox.Width / 2, swordHitBox.Y + swordHitBox.Height / 2);
 
@@ -35,8 +39,8 @@ namespace WaveAttack
             }
 
             direction.Normalize();
-            float rotation = (float)Math.Atan2(direction.Y, direction.X);  
-            Vector2 hitBoxCenter = player.position + direction * (swordHeight/2);
+            rotation = (float)Math.Atan2(direction.Y, direction.X);  
+            hitBoxCenter = GameManager.Instance.entities[0].position + direction * (swordHeight/2);
 
             Vector2 perp = new Vector2(-direction.Y, direction.X);
             Vector2 forward = direction * (swordHeight/2);
@@ -63,7 +67,7 @@ namespace WaveAttack
             //bottomRight = GameManager.Instance.RotatePoint(bottomRight, player.position, rotation);
 
             Vector2[] swordHitBoxVertices = new Vector2[]{topLeft, topRight, bottomRight, bottomLeft};
-
+            
             foreach(var entity in GameManager.Instance.entities){
                 if(entity is BaseEnemy enemy && enemy.isActive){
                     if(GameManager.Instance.IsPointInsidePolygon(enemy.hitBox, swordHitBoxVertices)){
@@ -77,7 +81,8 @@ namespace WaveAttack
         {
             //if (isActive)
             //{
-                spriteBatch.Draw(texture, position, null, Color.White, 0, new Vector2(texture.Width / 2, texture.Height / 2), scale, SpriteEffects.None, 0f);
+            hitBoxCenter = GameManager.Instance.entities[0].position + direction * (swordHeight/2);
+                spriteBatch.Draw(texture, hitBoxCenter, null, Color.White, (rotation+(float)Math.PI*1f/4f), new Vector2(texture.Width / 2, texture.Height / 2), scale, SpriteEffects.None, 0f);
             //}
         }
     }

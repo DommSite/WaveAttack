@@ -10,7 +10,7 @@ namespace WaveAttack
 
         }
 
-        public override void Use(GameTime gameTime, Player player, MouseState mState){
+        public override void Use(GameTime gameTime, MouseState mState){
             
         }
     }

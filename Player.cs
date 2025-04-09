@@ -82,7 +82,7 @@ namespace WaveAttack
         public override void Attack(GameTime gameTime){
             MouseState mState = Mouse.GetState();
             if(mState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released) {
-                currentWeapon?.Use(gameTime, this, mState);
+                currentWeapon?.Use(gameTime, mState);
             }  
         }
 

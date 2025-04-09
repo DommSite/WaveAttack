@@ -26,7 +26,7 @@ namespace WaveAttack
             this.cooldownTime = cooldownTime;
         }
 
-        public abstract void Use(GameTime gameTime, Player player, MouseState mState);
+        public abstract void Use(GameTime gameTime, MouseState mState);
         
 
         public virtual void Update(GameTime gameTime){
@@ -39,7 +39,13 @@ namespace WaveAttack
             }
         }
 
-        public abstract void Draw(SpriteBatch spriteBatch);
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            //if (isActive)
+            //{
+                //spriteBatch.Draw(texture, position, null, Color.White, 0, new Vector2(texture.Width / 2, texture.Height / 2), scale, SpriteEffects.None, 0f);
+            //}
+        }
             
         
     }
