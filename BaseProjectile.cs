@@ -10,10 +10,10 @@ namespace WaveAttack
         protected Vector2 direction;
         protected int damage {get; private set;}
         protected bool isEnemyProjectile {get; private set;}
-        float speedProjectile = 10f;
+        float speedProjectile = 50f;
         protected float rotation;
 
-        public BaseProjectile(Vector2 position, Vector2 direction, int damage, bool isEnemyProjectile):base(FileManager.GetTexture("ProjectileBullet"), position){
+        public BaseProjectile(Vector2 position, Vector2 direction, int damage, bool isEnemyProjectile):base(FileManager.GetTexture("ProjectileBullet"), position, 0.05f){
             this.direction = direction;
             this.damage = damage;
             this.isEnemyProjectile = isEnemyProjectile;
@@ -22,41 +22,47 @@ namespace WaveAttack
         }
 
         public override void Update(GameTime gameTime)
-        {
+        { 
             position += direction * speedProjectile * (float)gameTime.ElapsedGameTime.TotalSeconds;;
-
-            if (position.X < 0 || position.X > 800 || position.Y < 0 || position.Y > 600)
-            {
-                isActive = false;
-            }
-
-            CheckCollision();
+            hitBox = new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale), (int)(texture.Height * scale));
+            if(isActive){
+                CheckCollision();
+            }          
         }
 
         private void CheckCollision(){
+            int screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            int screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            int margin = 50;
+            if (position.X < 0 - (margin + texture.Width) || position.X > screenWidth + (margin + texture.Width) || position.Y < 0 - (margin + texture.Height) || position.Y > screenHeight + (margin + texture.Height))
+            {
+                isActive = false;
+            }
             if(isEnemyProjectile){
-                if(GameManager.Instance.player.hitBox.Intersects(hitBox)){
+                if(GameManager.Instance.player.hitBox.Intersects(this.hitBox)){
                     GameManager.Instance.player.TakeDamage(damage);
                     isActive = false;
                 }
             }
-
-            foreach(var enemy in GameManager.Instance.enemies){
-                if(enemy.hitBox.Intersects(hitBox)){
-                    enemy.TakeDamage(damage);
-                    isActive = false;
-                    break;
+            
+            else{
+                Console.WriteLine($"Projectile hitbox: {this.hitBox}");
+                foreach(var entity in GameManager.Instance.entities){                   
+                    if(entity is BaseEnemy enemy && enemy.isActive){
+                        Console.WriteLine($"Enemy hitbox: {enemy.hitBox}");
+                        if(enemy.hitBox.Intersects(hitBox)){
+                            enemy.TakeDamage(damage);
+                            isActive = false;
+                            break;
+                        }
+                    }                          
                 }
-            }
-
+            }   
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (isActive)
-            {
-                spriteBatch.Draw(texture, position, null, Color.White, rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1.0f, SpriteEffects.None, 0f);
-            }
+            spriteBatch.Draw(texture, position, null, Color.White, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, SpriteEffects.None, 0f);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpFont.Cache;
 
 namespace WaveAttack
 {
@@ -9,12 +10,12 @@ namespace WaveAttack
         public int health{get; protected set;}
         protected float speed;
 
-        public BaseEntity(Texture2D texture, Vector2 position, int health, float speed) : base(texture, position){
+        public BaseEntity(Texture2D texture, Vector2 position, float scale, int health, float speed) : base(texture, position, scale){
             this.health = health;
             this.speed = speed;
         }
 
-        public void TakeDamage(int damage){
+        public virtual void TakeDamage(int damage){
             health -= damage;
             if(health <= 0){
                 health = 0;
@@ -26,10 +27,6 @@ namespace WaveAttack
         public abstract void Move(GameTime gameTime);
         public abstract void Attack(GameTime gameTime);
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-        }
 
     }
 }

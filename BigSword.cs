@@ -5,11 +5,11 @@ namespace WaveAttack
 {
     public class BigSword : Weapon
     {
-        public BigSword() : base("BigSword", 20, 1.2f, FileManager.GetTexture("BigSword"),1){
+        public BigSword() : base("BigSword", 20, 1.2f, FileManager.GetTexture("BigSword"),1, 1.5f){
 
         }
 
-        public override void Use(Player player){
+        public override void Use(GameTime gameTime, Player player){
             
         }
     }

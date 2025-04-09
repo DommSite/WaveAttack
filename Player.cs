@@ -14,15 +14,19 @@ namespace WaveAttack
         private List<Weapon> inventory = new List<Weapon>();
         private MouseState oldState;
         private float runSpeed;
+        private TimeSpan staminaDrainRate = TimeSpan.FromMilliseconds(100);
+        private TimeSpan staminaRegenRate = TimeSpan.FromMilliseconds(100);
         private TimeSpan regenCooldown = TimeSpan.FromSeconds(2);
-        private TimeSpan timeSpan = TimeSpan.Zero;
+        private TimeSpan drainTimer = TimeSpan.Zero;
+        private TimeSpan regenTimer = TimeSpan.Zero;
+        private TimeSpan cooldownTimer = TimeSpan.Zero;
         private bool staminaEmpty = false;
 
         public List<Weapon> GetWeapons(){
             return inventory;
         }
     
-        public Player(Vector2 position) : base(FileManager.GetTexture("Player"), position, 100, 1f){
+        public Player(Vector2 position) : base(FileManager.GetTexture("Player"), position, 0.02f, 100, 1f){
             inventory.Add(new Sword());
             inventory.Add(new BigSword());
             inventory.Add(new Flintlock());
@@ -30,20 +34,24 @@ namespace WaveAttack
             currentWeapon = inventory[0];
             selectedWeaponSlot = 0;
         }
+        public void test(){
+            health++;
+        }
+        public void test2(){
+            health++;
+        }
 
         public override void Update(GameTime gameTime)
         {
-            MouseState mState = Mouse.GetState();
-            KeyboardState kState = Keyboard.GetState();
-
             Move(gameTime);
-            if(mState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released) {
-                Attack(gameTime);
-            }
-            ChangeWeapon(kState);
+            Attack(gameTime);           
+            ChangeWeapon();
+            currentWeapon?.Update(gameTime);
+            hitBox = new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale), (int)(texture.Height * scale));
         }
 
-        public void ChangeWeapon(KeyboardState kState){
+        public void ChangeWeapon(){
+            KeyboardState kState = Keyboard.GetState();
             for (int i = 0; i < 10; i++){
                 Keys key = Keys.D1 + i;
 
@@ -72,7 +80,10 @@ namespace WaveAttack
         }
 
         public override void Attack(GameTime gameTime){
-            currentWeapon.Use(this);
+            MouseState mState = Mouse.GetState();
+            if(mState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released) {
+                currentWeapon?.Use(gameTime, this);
+            }  
         }
 
         public override void Move(GameTime gameTime){
@@ -98,32 +109,43 @@ namespace WaveAttack
             {
                 direction.X += 1;
             }
-            if(kState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift)) 
+            if (kState.IsKeyDown(Keys.LeftShift) && direction != Vector2.Zero && !staminaEmpty)
             {
-                if(stamina > 0 && direction !=Vector2.Zero && !staminaEmpty){
-                    stamina--;
-                    runSpeed = speed*2;
-                } 
-            }
-            if(stamina <= 0 && !staminaEmpty){
-                staminaEmpty = true;
-                timeSpan = TimeSpan.Zero;
-            }
-            if(staminaEmpty){
-                timeSpan += gameTime.ElapsedGameTime;
-                
-                if(timeSpan >= regenCooldown){
-                    staminaEmpty = false;
-                    timeSpan = TimeSpan.Zero;
-                    stamina = 1;
-                }
-            }
-            else if(stamina < 100){              
-                timeSpan += gameTime.ElapsedGameTime;
-                if (timeSpan >= TimeSpan.FromMilliseconds(100))
+                drainTimer += gameTime.ElapsedGameTime;
+                if (drainTimer >= staminaDrainRate)
                 {
-                    stamina++;
-                    timeSpan = TimeSpan.Zero;
+                    stamina--;
+                    drainTimer = TimeSpan.Zero;
+
+                    if (stamina <= 0)
+                    {
+                        staminaEmpty = true;
+                        cooldownTimer = TimeSpan.Zero;
+                    }
+                }
+                runSpeed = speed * 2;
+            }
+            else
+            {
+                // Not running — regen logic
+                if (staminaEmpty)
+                {
+                    cooldownTimer += gameTime.ElapsedGameTime;
+                    if (cooldownTimer >= regenCooldown)
+                    {
+                        staminaEmpty = false;
+                        regenTimer = TimeSpan.Zero;
+                        stamina = 1; // Optional: kickstart regen
+                    }
+                }
+                else if (stamina < 100)
+                {
+                    regenTimer += gameTime.ElapsedGameTime;
+                    if (regenTimer >= staminaRegenRate)
+                    {
+                        stamina++;
+                        regenTimer = TimeSpan.Zero;
+                    }
                 }
             }
 
@@ -141,12 +163,7 @@ namespace WaveAttack
             //you ded boi
         }
 
-        public override void Draw(SpriteBatch spriteBatch){
-            if (isActive)
-            {
-                spriteBatch.Draw(texture, position, null, Color.White, 0, new Vector2(texture.Width / 2, texture.Height / 2), 0.02f, SpriteEffects.None, 0f);
-            }
-        }
+       
 
         
 
