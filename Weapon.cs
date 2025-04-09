@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace WaveAttack
 {
@@ -25,7 +26,7 @@ namespace WaveAttack
             this.cooldownTime = cooldownTime;
         }
 
-        public abstract void Use(GameTime gameTime, Player player);
+        public abstract void Use(GameTime gameTime, Player player, MouseState mState);
         
 
         public virtual void Update(GameTime gameTime){
@@ -37,5 +38,9 @@ namespace WaveAttack
                 }
             }
         }
+
+        public abstract void Draw(SpriteBatch spriteBatch);
+            
+        
     }
 }

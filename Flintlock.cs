@@ -9,14 +9,14 @@ namespace WaveAttack
         public Flintlock() : base("Flintlock", 40, 2f, FileManager.GetTexture("Flintlock"),2, 1f){
         }
 
-        public override void Use(GameTime gameTime, Player player){
+        public override void Use(GameTime gameTime, Player player, MouseState mState){
             if(!canAttack){
                 return;
             }
 
             canAttack = false;
 
-            Vector2 direction = Mouse.GetState().Position.ToVector2() - player.position;
+            Vector2 direction = mState.Position.ToVector2() - player.position;
             if(direction != Vector2.Zero){
                 direction.Normalize();
                 Vector2 spawnPos = player.position + direction * 10f;

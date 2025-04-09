@@ -120,6 +120,66 @@ namespace WaveAttack
             }while(Vector2.Distance(spawnPos, player.position) < safeRadius && attempts < maxAttempts);
 
             return spawnPos;
-        }       
+        }      
+
+
+        /*public Vector2 RotatePoint(Vector2 point, Vector2 center, float angle)
+        {
+            float cosAngle = (float)Math.Cos(angle);
+            float sinAngle = (float)Math.Sin(angle);
+   
+            point -= center;
+            
+            float newX = point.X * cosAngle - point.Y * sinAngle;
+            float newY = point.X * sinAngle + point.Y * cosAngle;
+
+            return new Vector2(newX + center.X, newY + center.Y);
+        }*/
+
+
+        public bool IsPointInsidePolygon(Rectangle entityHitBox, Vector2[] polygon)
+        {
+            int intersections = 0;
+           
+            Vector2 point = new Vector2(entityHitBox.X + entityHitBox.Width / 2, entityHitBox.Y + entityHitBox.Height / 2);
+          
+            for (int i = 0; i < polygon.Length; i++)
+            {
+                Vector2 vertex1 = polygon[i];
+                Vector2 vertex2 = polygon[(i + 1) % polygon.Length];
+
+                if (DoIntersect(point, vertex1, vertex2))
+                {
+                    intersections++;
+                }
+            }
+
+            
+            return (intersections % 2 == 1);
+        }
+
+
+        private bool DoIntersect(Vector2 point, Vector2 vertex1, Vector2 vertex2)
+        {
+            
+            if (vertex1.Y > vertex2.Y)
+            {
+                Vector2 temp = vertex1;
+                vertex1 = vertex2;
+                vertex2 = temp;
+            }
+
+            
+            if (point.Y == vertex1.Y || point.Y == vertex2.Y)
+                point.Y += 0.1f;  
+
+            if (point.Y > vertex2.Y || point.Y < vertex1.Y)
+                return false;
+
+            float xIntersection = (point.Y - vertex1.Y) * (vertex2.X - vertex1.X) / (vertex2.Y - vertex1.Y) + vertex1.X;
+
+            
+            return point.X < xIntersection;
+        } 
     }
 }

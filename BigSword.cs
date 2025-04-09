@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace WaveAttack
 {
@@ -9,7 +10,7 @@ namespace WaveAttack
 
         }
 
-        public override void Use(GameTime gameTime, Player player){
+        public override void Use(GameTime gameTime, Player player, MouseState mState){
             
         }
     }

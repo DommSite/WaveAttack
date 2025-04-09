@@ -45,11 +45,9 @@ namespace WaveAttack
                 }
             }
             
-            else{
-                Console.WriteLine($"Projectile hitbox: {this.hitBox}");
+            else{              
                 foreach(var entity in GameManager.Instance.entities){                   
                     if(entity is BaseEnemy enemy && enemy.isActive){
-                        Console.WriteLine($"Enemy hitbox: {enemy.hitBox}");
                         if(enemy.hitBox.Intersects(hitBox)){
                             enemy.TakeDamage(damage);
                             isActive = false;
