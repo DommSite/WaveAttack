@@ -4,16 +4,16 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/BigSword.png</File>
-    <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/EnemySniper.png</File>
-    <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/EnemyStandard.png</File>
-    <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/Flintlock.png</File>
-    <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/GameFont.spritefont</File>
-    <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/Player.png</File>
-    <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/ProjectileBullet.png</File>
-    <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/Sword.png</File>
-    <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/WeaponSelector.png</File>
-    <File>C:/Users/johan/Documents/GitHub/WaveAttack/Content/WeaponSlot.png</File>
+    <File>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/BigSword.png</File>
+    <File>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/EnemySniper.png</File>
+    <File>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/EnemyStandard.png</File>
+    <File>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/Flintlock.png</File>
+    <File>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/GameFont.spritefont</File>
+    <File>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/Player.png</File>
+    <File>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/ProjectileBullet.png</File>
+    <File>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/Sword.png</File>
+    <File>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/WeaponSelector.png</File>
+    <File>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/WeaponSlot.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

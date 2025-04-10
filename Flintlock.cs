@@ -6,7 +6,7 @@ namespace WaveAttack
 {
     public class Flintlock : Weapon
     {
-        public Flintlock() : base("Flintlock", 40, 2f, FileManager.GetTexture("Flintlock"),2, 1f){
+        public Flintlock() : base("Flintlock", 40, 2f, FileManager.GetTexture("Flintlock"),2, 1f, 1f){
         }
 
         public override void Use(GameTime gameTime, MouseState mState){
@@ -23,6 +23,14 @@ namespace WaveAttack
                 BaseProjectile bullet = new BaseProjectile(spawnPos, direction, 50, false);
                 GameManager.Instance.AddProjectile(bullet);
             }
+        }
+        public override void BeginAttack()
+        {
+            
+        }
+        public override void ContinueAttack(GameTime gameTime)
+        {
+            
         }
     }
 }
