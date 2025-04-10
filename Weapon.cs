@@ -18,7 +18,8 @@ namespace WaveAttack
         protected bool canAttack = true;
         protected HashSet<BaseEnemy> hitEnemies = new HashSet<BaseEnemy>();
         protected bool isAttacking = false;
-        protected float slashTimer = 0f;
+        protected float attackTimer = 0f;
+        protected float attackDuration;
         protected Vector2 direction;
         protected Vector2[] swordHitBoxVertices;
         protected float rotation;
@@ -42,7 +43,7 @@ namespace WaveAttack
             }
             canAttack = false;
             isAttacking = true;
-            slashTimer = 0f;      
+            attackTimer = 0f;      
             hitEnemies.Clear();   
            
             direction = mState.Position.ToVector2() - GameManager.Instance.entities[0].position;

@@ -9,20 +9,16 @@ namespace WaveAttack
     {
         float swordWidth;// = 50f;
         float swordHeight;// = 150f;
-        float scale = 0.02f;
-        
-        
-        Vector2 hitBoxCenter;
-
-
-        
-        float slashDuration = 0.5f; 
+        Vector2 hitBoxCenter;   
         
 
         public Sword() : base("Sword", 15, 1.5f, FileManager.GetTexture("Sword"), 0, 0.5f){
+            scale = 0.02f;
             swordWidth = texture.Width * scale;
             swordHeight = texture.Height * scale;
             swordHitBoxVertices = new Vector2[4];
+            attackDuration = 0.5f;
+            
         }
 
 
@@ -40,15 +36,15 @@ namespace WaveAttack
                 return;
             }
         
-            slashTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (slashTimer >= slashDuration)
+            if (attackTimer >= attackDuration)
             {
                 isAttacking = false;
                 return;
             }
 
-            float progress = slashTimer / slashDuration;
+            float progress = attackTimer / attackDuration;
             float movementFactor = (float)Math.Sin(progress * Math.PI);
             float thrustDistance = swordHeight * 0.6f;
             hitBoxCenter = GameManager.Instance.entities[0].position + direction * thrustDistance * movementFactor;
