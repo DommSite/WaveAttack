@@ -56,9 +56,10 @@ namespace WaveAttack
                 SpawnRandomEnemy();
                 spawnTimer = TimeSpan.Zero;
             }
+            player.currentWeapon.Update(gameTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             foreach (var entity in entities){
                 entity.Draw(spriteBatch);
@@ -66,7 +67,7 @@ namespace WaveAttack
 
             hud.Draw(spriteBatch);
 
-            player.currentWeapon.Draw(spriteBatch);
+            player.currentWeapon.Draw(spriteBatch, gameTime);
         }
 
 

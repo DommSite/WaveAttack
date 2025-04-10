@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WaveAttack")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bb62a482b9b0b4cc0183b9bf396689fcccaa777f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe1e3de4930bf8abb59e71d83d4e6a0c5d79c8b7")]
 [assembly: System.Reflection.AssemblyProductAttribute("WaveAttack")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WaveAttack")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

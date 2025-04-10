@@ -77,7 +77,7 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
         _spriteBatch.Begin();
-        GameManager.Instance.Draw(_spriteBatch);
+        GameManager.Instance.Draw(_spriteBatch, gameTime);
         /*
         foreach(var entity in entities){
             entity.Draw(_spriteBatch);

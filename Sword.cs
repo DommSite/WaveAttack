@@ -9,81 +9,80 @@ namespace WaveAttack
     {
         float swordWidth;// = 50f;
         float swordHeight;// = 150f;
-        float scale = 0.05f;
-        float rotation;
-        Vector2 direction;
+        float scale = 0.02f;
+        
+        
         Vector2 hitBoxCenter;
+
+
+        
+        float slashDuration = 0.5f; 
+        
 
         public Sword() : base("Sword", 15, 1.5f, FileManager.GetTexture("Sword"), 0, 0.5f){
             swordWidth = texture.Width * scale;
             swordHeight = texture.Height * scale;
+            swordHitBoxVertices = new Vector2[4];
         }
 
 
-        public override void Use(GameTime gameTime, MouseState mState){
+
+        public override void Update(GameTime gameTime){
             if(!canAttack){
+                cooldownTimer += gameTime.ElapsedGameTime;
+                if(cooldownTimer.TotalSeconds >= cooldownTime){
+                    canAttack = true;
+                    cooldownTimer = TimeSpan.Zero;
+                }
+            }
+            
+            if (!isAttacking){
                 return;
             }
-            canAttack = false;
-            
-            
-            //Vector2 mousePosition = mState.Position.ToVector2();
-            direction = mState.Position.ToVector2() - GameManager.Instance.entities[0].position;
-                   
-            //Vector2 center = new Vector2(swordHitBox.X + swordHitBox.Width / 2, swordHitBox.Y + swordHitBox.Height / 2);
+        
+            slashTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-
-            if (direction == Vector2.Zero)
+            if (slashTimer >= slashDuration)
             {
+                isAttacking = false;
                 return;
             }
 
-            direction.Normalize();
-            rotation = (float)Math.Atan2(direction.Y, direction.X);  
-            hitBoxCenter = GameManager.Instance.entities[0].position + direction * (swordHeight/2);
+            float progress = slashTimer / slashDuration;
+            float movementFactor = (float)Math.Sin(progress * Math.PI);
+            float thrustDistance = swordHeight * 0.6f;
+            hitBoxCenter = GameManager.Instance.entities[0].position + direction * thrustDistance * movementFactor;
 
             Vector2 perp = new Vector2(-direction.Y, direction.X);
-            Vector2 forward = direction * (swordHeight/2);
-            Vector2 side = perp * (swordWidth/2);
+            Vector2 forward = direction * (swordHeight / 2);
+            Vector2 side = perp * (swordWidth / 2);
 
-            Vector2 topLeft = hitBoxCenter - forward - side;
-            Vector2 topRight = hitBoxCenter - forward + side;
-            Vector2 bottomLeft = hitBoxCenter + forward - side;
-            Vector2 bottomRight = hitBoxCenter + forward + side;
+            swordHitBoxVertices[0] = hitBoxCenter - forward - side;
+            swordHitBoxVertices[1] = hitBoxCenter - forward + side;
+            swordHitBoxVertices[2] = hitBoxCenter + forward + side;
+            swordHitBoxVertices[3] = hitBoxCenter + forward - side;
 
-            //Vector2 swingPos = player.position + direction * 30f;
-
-            //Rectangle swordHitBox = new Rectangle(((int)swingPos.X - (int)(swordWidth / 2)), ((int)swingPos.Y - (int)(swordHeight / 2)), (int)swordWidth, (int)swordHeight);
-
-            //Vector2 topLeft = player.position + new Vector2(-swordWidth / 2, -swordHeight / 2);
-            //Vector2 topRight = player.position + new Vector2(swordWidth / 2, -swordHeight / 2);
-            //Vector2 bottomLeft = player.position + new Vector2(-swordWidth / 2, swordHeight / 2);
-            //Vector2 bottomRight = player.position + new Vector2(swordWidth / 2, swordHeight / 2);
-
-            // Rotate all four corners based on the sword's rotation
-            //topLeft = GameManager.Instance.RotatePoint(topLeft, player.position, rotation);
-            //topRight = GameManager.Instance.RotatePoint(topRight, player.position, rotation);
-            //bottomLeft = GameManager.Instance.RotatePoint(bottomLeft, player.position, rotation);
-            //bottomRight = GameManager.Instance.RotatePoint(bottomRight, player.position, rotation);
-
-            Vector2[] swordHitBoxVertices = new Vector2[]{topLeft, topRight, bottomRight, bottomLeft};
-            
-            foreach(var entity in GameManager.Instance.entities){
-                if(entity is BaseEnemy enemy && enemy.isActive){
-                    if(GameManager.Instance.IsPointInsidePolygon(enemy.hitBox, swordHitBoxVertices)){
+            foreach (var entity in GameManager.Instance.entities)
+            {
+                if (entity is BaseEnemy enemy && enemy.isActive && !hitEnemies.Contains(enemy))
+                {
+                    if (GameManager.Instance.IsPointInsidePolygon(enemy.hitBox, swordHitBoxVertices))
+                    {
                         enemy.TakeDamage(damage);
+                        hitEnemies.Add(enemy);
                     }
-                }          
+                }
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            //if (isActive)
-            //{
-            hitBoxCenter = GameManager.Instance.entities[0].position + direction * (swordHeight/2);
-                spriteBatch.Draw(texture, hitBoxCenter, null, Color.White, (rotation+(float)Math.PI*1f/4f), new Vector2(texture.Width / 2, texture.Height / 2), scale, SpriteEffects.None, 0f);
-            //}
+            if (!isAttacking){
+                return;
+            } 
+
+            spriteBatch.Draw(texture, hitBoxCenter, null, Color.White, rotation + MathF.PI / 4f, new Vector2(texture.Width / 2, texture.Height / 2), scale, SpriteEffects.None, 0f);  
+            
         }
     }
 }

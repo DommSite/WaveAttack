@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,8 +16,17 @@ namespace WaveAttack
         protected float cooldownTime;
         protected TimeSpan cooldownTimer = TimeSpan.Zero;
         protected bool canAttack = true;
+        protected HashSet<BaseEnemy> hitEnemies = new HashSet<BaseEnemy>();
+        protected bool isAttacking = false;
+        protected float slashTimer = 0f;
+        protected Vector2 direction;
+        protected Vector2[] swordHitBoxVertices;
+        protected float rotation;
+        protected float scale;
 
-        public Weapon(string name, int damage, float attackSpeed, Texture2D texture, int weaponNumber, float cooldownTime)
+
+
+        public Weapon(string name, int damage, float attackSpeed, Texture2D texture, int weaponNumber, float cooldownTime) 
         {
             this.name = name;
             this.damage = damage;
@@ -26,7 +36,25 @@ namespace WaveAttack
             this.cooldownTime = cooldownTime;
         }
 
-        public abstract void Use(GameTime gameTime, MouseState mState);
+        public virtual void Use(GameTime gameTime, MouseState mState){
+            if(!canAttack || isAttacking){
+                return;
+            }
+            canAttack = false;
+            isAttacking = true;
+            slashTimer = 0f;      
+            hitEnemies.Clear();   
+           
+            direction = mState.Position.ToVector2() - GameManager.Instance.entities[0].position;
+
+            if (direction == Vector2.Zero)
+            {
+                return;
+            }
+
+            direction.Normalize();
+            rotation = (float)Math.Atan2(direction.Y, direction.X);  
+        }
         
 
         public virtual void Update(GameTime gameTime){
@@ -39,7 +67,7 @@ namespace WaveAttack
             }
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             //if (isActive)
             //{
