@@ -8,15 +8,15 @@ namespace WaveAttack
 {
     public class BigSword : Weapon
     {
-        float swingArc = MathHelper.PiOver2; // 90 degrees
-        
+        float swingArc = MathHelper.PiOver2;
         float currentRotationOffset;
         Vector2 origin;
-
+        Vector2 swingDir;
+        bool isFlipped;
         
 
         
-        public BigSword() : base("BigSword", 20, 1.2f, FileManager.GetTexture("BigSword"),1, 0.1f, 3f){;
+        public BigSword() : base("BigSword", 20, 1.2f, FileManager.GetTexture("BigSword"),1, 0.025f, 1f){;
 
         }
 
@@ -24,6 +24,9 @@ namespace WaveAttack
         {
             currentRotationOffset = -swingArc / 2f;
             hitEnemies.Clear();
+            attackTimer = 0f;
+            isFlipped = direction.X < 0;
+            currentRotationOffset = (isFlipped ? 1 : -1) * swingArc / 2f;
         }
 
         public override void ContinueAttack(GameTime gameTime)
@@ -38,11 +41,18 @@ namespace WaveAttack
             
             
             float t = attackTimer / attackDuration;
-            float swingAngle = swingArc * t;
+            float swingAngle = swingArc * (isFlipped ? (1 - t) : t);
             float currentAngle = rotation + currentRotationOffset + swingAngle;
 
-            Vector2 swingDir = new Vector2((float)Math.Cos(currentAngle), (float)Math.Sin(currentAngle));
-            origin = GameManager.Instance.entities[0].position + swingDir * (swordHeight / 2);
+            swingDir = new Vector2((float)Math.Cos(currentAngle), (float)Math.Sin(currentAngle));
+            Vector2 playerPos = GameManager.Instance.entities[0].position;
+            origin =  playerPos + swingDir * (swordHeight / 2);
+
+           /* if (isFlipped)
+            {
+                origin.X = 2 * playerPos.X - origin.X;
+                //origin.X = playerPos.X - (origin.X - playerPos.X);
+            }*/
 
             Vector2 perp = new Vector2(-swingDir.Y, swingDir.X);
             Vector2 forward = swingDir * (swordHeight);
@@ -66,6 +76,29 @@ namespace WaveAttack
                     }
                 }
             }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            if (!isAttacking)
+                return;
+
+            float t = attackTimer / attackDuration;
+            float swingAngle = swingArc * (isFlipped ? (1 - t) : t);
+            float currentAngle = rotation + currentRotationOffset + swingAngle + MathF.PI * 2;
+            //float drawRotation = isFlipped ? currentAngle - MathF.PI : currentAngle;
+
+            spriteBatch.Draw(
+                texture,
+                origin,
+                null,
+                Color.White,
+                currentAngle,
+                new Vector2(texture.Width / 2f, texture.Height / 2f), // origin of texture
+                scale,
+                isFlipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
+                0f
+            );
         }
 
 

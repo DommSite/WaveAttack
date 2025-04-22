@@ -84,6 +84,7 @@ namespace WaveAttack
             if(mState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released) {
                 currentWeapon?.Use(gameTime, mState);
             }  
+            oldState = mState;
         }
 
         public override void Move(GameTime gameTime){
