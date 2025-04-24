@@ -16,7 +16,7 @@ namespace WaveAttack
         
 
         
-        public BigSword() : base("BigSword", 20, 1.2f, FileManager.GetTexture("BigSword"),1, 0.025f, 1f){;
+        public BigSword(BaseEntity owner) : base("BigSword", 20, 1.2f, FileManager.GetTexture("BigSword"),1, 0.025f, 1f, owner){;
 
         }
 

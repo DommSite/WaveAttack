@@ -8,7 +8,7 @@ namespace WaveAttack
     {
         public GunnerEnemy(Vector2 position) : base(FileManager.GetTexture("EnemySniper"), position, 0.03f, 30, 1f, 2, 150)
         {
-
+            weapon = new Flintlock(this);
         }
 
 

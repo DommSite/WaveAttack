@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -6,10 +8,10 @@ namespace WaveAttack
 {
     public class Flintlock : Weapon
     {
-        public Flintlock() : base("Flintlock", 40, 2f, FileManager.GetTexture("Flintlock"),2, 1f, 1f){
+        public Flintlock(BaseEntity owner) : base("Flintlock", 40, 2f, FileManager.GetTexture("Flintlock"),2, 0.1f, 1f, owner){
         }
 
-        public override void Use(GameTime gameTime, MouseState mState){
+        /*public override void Use(GameTime gameTime, MouseState mState){
             if(!canAttack){
                 return;
             }
@@ -23,14 +25,81 @@ namespace WaveAttack
                 BaseProjectile bullet = new BaseProjectile(spawnPos, direction, 50, false);
                 GameManager.Instance.AddProjectile(bullet);
             }
-        }
+        }*/
+
+
         public override void BeginAttack()
         {
-            
+            if(owner == null || !canAttack){
+                return;
+            }
+
+            canAttack = false;
+            isAttacking = true;
+            attackTimer = 0f;
+            cooldownTimer = TimeSpan.Zero;
+
+            Vector2 targetDir;
+
+            if (owner is Player)
+            {
+                var mouse = Mouse.GetState();
+                targetDir = mouse.Position.ToVector2() - owner.position;
+            }
+            else
+            {
+                // For enemies: shoot toward the player
+                targetDir = GameManager.Instance.player.position - owner.position;
+            }
+
+            if (targetDir != Vector2.Zero)
+            {
+                targetDir.Normalize();
+                Vector2 spawnPos = owner.position + targetDir * 10f;
+                bool enemyProjectile;
+                if(owner is Player){
+                    enemyProjectile = false;
+                }
+                else{
+                    enemyProjectile = true;
+                }
+                
+                BaseProjectile bullet = new BaseProjectile(spawnPos, targetDir, damage, enemyProjectile);
+                GameManager.Instance.AddProjectile(bullet);
+            }
+
+
+
+
         }
         public override void ContinueAttack(GameTime gameTime)
         {
             
+        }
+
+
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            if (owner == null)
+                return;
+
+            Vector2 direction = (owner is Player)
+                ? Mouse.GetState().Position.ToVector2() - owner.position
+                : GameManager.Instance.player.position - owner.position;
+
+            float angle = (float)Math.Atan2(direction.Y, direction.X);
+
+            spriteBatch.Draw(
+                texture,
+                owner.position,
+                null,
+                Color.White,
+                angle,
+                new Vector2(texture.Width / 2f, texture.Height / 2f),
+                scale,
+                SpriteEffects.None,
+                0f
+            );
         }
     }
 }

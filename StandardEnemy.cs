@@ -11,14 +11,12 @@ namespace WaveAttack
         public StandardEnemy(Vector2 position)
             : base(FileManager.GetTexture("EnemyStandard"), position, 0.05f, 50, 2f, 1, 15)
         {
-
+            weapon = new Sword(this);
         }
 
-        public override void Attack(GameTime gameTime){
-                   
-        }
+        
 
-       
+
 
 
         /*public override void Die(){

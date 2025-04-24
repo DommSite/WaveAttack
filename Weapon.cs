@@ -26,10 +26,11 @@ namespace WaveAttack
         protected float scale;
         protected float swordHeight;
         protected float swordWidth;
+        protected BaseEntity owner;
 
 
 
-        public Weapon(string name, int damage, float attackSpeed, Texture2D texture, int weaponNumber, float scale, float attackDuration) 
+        public Weapon(string name, int damage, float attackSpeed, Texture2D texture, int weaponNumber, float scale, float attackDuration, BaseEntity owner) 
         {
             this.name = name;
             this.damage = damage;
@@ -39,13 +40,14 @@ namespace WaveAttack
             this.scale = scale;
             this.attackDuration = attackDuration;
             this.cooldownTime = TimeSpan.FromSeconds(attackDuration*1.5);
+            this.owner = owner;
 
 
             swordWidth = texture.Width * scale;
             swordHeight = texture.Height * scale;
         }
 
-        public virtual void Use(GameTime gameTime, MouseState mState){
+        public virtual void Use(GameTime gameTime, Vector2 targetPosition){
             if(!canAttack || isAttacking){
                 return;
             }
@@ -55,7 +57,7 @@ namespace WaveAttack
             cooldownTimer = TimeSpan.Zero;     
             
             
-            direction = mState.Position.ToVector2() - GameManager.Instance.entities[0].position;
+            direction = targetPosition - owner.position;
 
             if (direction == Vector2.Zero)
             {

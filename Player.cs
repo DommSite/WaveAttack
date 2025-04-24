@@ -27,9 +27,9 @@ namespace WaveAttack
         }
     
         public Player(Vector2 position) : base(FileManager.GetTexture("Player"), position, 0.02f, 100, 1f){
-            inventory.Add(new Sword());
-            inventory.Add(new BigSword());
-            inventory.Add(new Flintlock());
+            inventory.Add(new Sword(this));
+            inventory.Add(new BigSword(this));
+            inventory.Add(new Flintlock(this));
 
             currentWeapon = inventory[0];
             selectedWeaponSlot = 0;
@@ -82,7 +82,7 @@ namespace WaveAttack
         public override void Attack(GameTime gameTime){
             MouseState mState = Mouse.GetState();
             if(mState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released) {
-                currentWeapon?.Use(gameTime, mState);
+                currentWeapon?.Use(gameTime, mState.Position.ToVector2());
             }  
             oldState = mState;
         }
