@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using WaveAttack.Weapons;
 
-namespace WaveAttack
+namespace WaveAttack.Entities
 {
     public class Player : BaseEntity
     {
         public int stamina = 100;
-        public  Weapon currentWeapon {get;private set;}
         public int selectedWeaponSlot{get; private set;}
         private List<Weapon> inventory = new List<Weapon>();
         private MouseState oldState;
@@ -21,6 +21,7 @@ namespace WaveAttack
         private TimeSpan regenTimer = TimeSpan.Zero;
         private TimeSpan cooldownTimer = TimeSpan.Zero;
         private bool staminaEmpty = false;
+        public int killCount = 0;
 
         public List<Weapon> GetWeapons(){
             return inventory;
@@ -31,7 +32,7 @@ namespace WaveAttack
             inventory.Add(new BigSword(this));
             inventory.Add(new Flintlock(this));
 
-            currentWeapon = inventory[0];
+            weapon = inventory[0];
             selectedWeaponSlot = 0;
         }
         public void test(){
@@ -44,9 +45,9 @@ namespace WaveAttack
         public override void Update(GameTime gameTime)
         {
             Move(gameTime);
-            Attack(gameTime);           
+            Attack(gameTime);          
             ChangeWeapon();
-            currentWeapon?.Update(gameTime);
+            weapon?.Update(gameTime);
             hitBox = new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale), (int)(texture.Height * scale));
         }
 
@@ -59,7 +60,7 @@ namespace WaveAttack
                 {
                     if (i < inventory.Count && inventory[i] != null)
                     {
-                        currentWeapon = inventory[i];
+                        weapon = inventory[i];
                         selectedWeaponSlot = i;
                     }
                     else
@@ -82,7 +83,7 @@ namespace WaveAttack
         public override void Attack(GameTime gameTime){
             MouseState mState = Mouse.GetState();
             if(mState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released) {
-                currentWeapon?.Use(gameTime, mState.Position.ToVector2());
+                weapon?.Use(gameTime, mState.Position.ToVector2());
             }  
             oldState = mState;
         }
@@ -155,6 +156,7 @@ namespace WaveAttack
             if(direction !=Vector2.Zero){
                 direction.Normalize();
             }
+            ApplyRepulsion(); 
             position += direction*runSpeed;        
             
         }

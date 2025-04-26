@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using WaveAttack.Entities;
+using WaveAttack.Entities.Enemies;
 
 
 namespace WaveAttack
@@ -12,8 +14,6 @@ namespace WaveAttack
         
         private static GameManager _instance;
         public static GameManager Instance => _instance ?? (_instance = new GameManager());
-        //private List<BaseProjectile> projectiles = new();
-        //public List<BaseEnemy> enemies = new();
         public Player player { get; private set;}
         public List<BaseClass> entities = new();
         
@@ -21,7 +21,7 @@ namespace WaveAttack
         private HUD hud;
         private Random random = new Random();
         private TimeSpan spawnTimer = TimeSpan.Zero;
-        private TimeSpan spawnInterval = TimeSpan.FromSeconds(3);
+        private TimeSpan spawnInterval = TimeSpan.FromSeconds(0.25);
 
 
         public void Initialize(Game1 game, GraphicsDevice graphicsDevice)
@@ -56,18 +56,24 @@ namespace WaveAttack
                 SpawnRandomEnemy();
                 spawnTimer = TimeSpan.Zero;
             }
-            player.currentWeapon.Update(gameTime);
+            player.weapon.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             foreach (var entity in entities){
-                entity.Draw(spriteBatch);
+                if(entity is not Player){
+                    entity.Draw(spriteBatch, gameTime);
+                    if(entity is BaseEntity baseEntity){
+                        baseEntity.weapon?.Draw(spriteBatch, gameTime);
+                    }   
+                }
             } 
-
+            player.Draw(spriteBatch, gameTime);
+            player.weapon?.Draw(spriteBatch,gameTime);
             hud.Draw(spriteBatch);
 
-            player.currentWeapon.Draw(spriteBatch, gameTime);
+            
         }
 
 
@@ -82,9 +88,9 @@ namespace WaveAttack
             else if(34  <= type && type <= 67){
                 enemy = new GunnerEnemy(GetRandomSpawnPosition());
             }
-            /*else if(68  <= type && type <= 10){
+            else if(68  <= type && type <= 10){
                 enemy = new ChunkyEnemy(GetRandomSpawnPosition());
-            }*/
+            }
             else{
                 enemy = new StandardEnemy(GetRandomSpawnPosition());
             }

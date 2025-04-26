@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using WaveAttack.Entities;
 
-namespace WaveAttack
+namespace WaveAttack.Weapons
 {
-    public abstract class Weapon
+    public abstract class Weapon : BaseClass
     {
         protected TimeSpan cooldownTimer = TimeSpan.Zero;
-        protected HashSet<BaseEnemy> hitEnemies = new HashSet<BaseEnemy>();
+        protected HashSet<BaseEntity> hitTargets = new HashSet<BaseEntity>();
         protected bool canAttack = true;
         protected bool isAttacking = false;
         protected float attackTimer = 0f;
-        public Texture2D texture{get;}
         protected string name { get; }
         protected int damage { get; }
         protected float attackSpeed { get; }
@@ -21,23 +21,21 @@ namespace WaveAttack
         protected TimeSpan cooldownTime;   
         protected float attackDuration;
         protected Vector2 direction;
-        protected Vector2[] swordHitBoxVertices;
-        protected float rotation;
-        protected float scale;
+        //protected Vector2[] swordHitBoxVertices;
+        
+        
         protected float swordHeight;
         protected float swordWidth;
         protected BaseEntity owner;
 
 
 
-        public Weapon(string name, int damage, float attackSpeed, Texture2D texture, int weaponNumber, float scale, float attackDuration, BaseEntity owner) 
+        public Weapon(string name, int damage, float attackSpeed, Texture2D texture, int weaponNumber, float scale, float attackDuration, BaseEntity owner) : base(texture, Vector2.Zero, scale)
         {
             this.name = name;
             this.damage = damage;
             this.attackSpeed = attackSpeed;
-            this.texture = texture;
             this.weaponNumber = weaponNumber;
-            this.scale = scale;
             this.attackDuration = attackDuration;
             this.cooldownTime = TimeSpan.FromSeconds(attackDuration*1.5);
             this.owner = owner;
@@ -56,11 +54,13 @@ namespace WaveAttack
             attackTimer = 0f; 
             cooldownTimer = TimeSpan.Zero;     
             
-            
+           
             direction = targetPosition - owner.position;
+             
 
             if (direction == Vector2.Zero)
             {
+                
                 canAttack = true;
                 isAttacking = false;
                 return;
@@ -68,13 +68,15 @@ namespace WaveAttack
 
             direction.Normalize();
             rotation = (float)Math.Atan2(direction.Y, direction.X);  
+
             BeginAttack();
         }
         
 
-        public virtual void Update(GameTime gameTime){
+        public override void Update(GameTime gameTime){
             if (isAttacking)
             {
+                
                 ContinueAttack(gameTime);
 
                 attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -116,10 +118,10 @@ namespace WaveAttack
         }
         
 
-        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        /*public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             
-        }
+        }*/
         
         public abstract void BeginAttack();
         public abstract void ContinueAttack(GameTime gameTime);

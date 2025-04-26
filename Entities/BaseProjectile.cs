@@ -1,19 +1,19 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WaveAttack.Entities.Enemies;
 
 
-namespace WaveAttack
+namespace WaveAttack.Entities
 {
     public class BaseProjectile : BaseClass
     {
         protected Vector2 direction;
         protected int damage {get; private set;}
         protected bool isEnemyProjectile {get; private set;}
-        float speedProjectile = 50f;
-        protected float rotation;
-
-        public BaseProjectile(Vector2 position, Vector2 direction, int damage, bool isEnemyProjectile):base(FileManager.GetTexture("ProjectileBullet"), position, 0.05f){
+        float speedProjectile = 150f;
+        
+        public BaseProjectile(Vector2 position, Vector2 direction, int damage, bool isEnemyProjectile):base(FileManager.GetTexture("ProjectileBullet"), position, 0.015f){
             this.direction = direction;
             this.damage = damage;
             this.isEnemyProjectile = isEnemyProjectile;
@@ -57,10 +57,11 @@ namespace WaveAttack
                 }
             }   
         }
+        
 
-        public override void Draw(SpriteBatch spriteBatch)
+        /*public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, position, null, Color.White, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, SpriteEffects.None, 0f);
-        }
+        }*/
     }
 }

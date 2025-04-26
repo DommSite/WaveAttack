@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using WaveAttack.Entities;
 
-namespace WaveAttack
+namespace WaveAttack.Weapons
 {
     public class Flintlock : Weapon
     {
-        public Flintlock(BaseEntity owner) : base("Flintlock", 40, 2f, FileManager.GetTexture("Flintlock"),2, 0.1f, 1f, owner){
+        public Flintlock(BaseEntity owner) : base("Flintlock", 40, 2f, FileManager.GetTexture("Flintlock"),2, 0.04f, 1f, owner){
+            spriteEffects = SpriteEffects.FlipHorizontally;
         }
 
         /*public override void Use(GameTime gameTime, MouseState mState){
@@ -30,7 +32,7 @@ namespace WaveAttack
 
         public override void BeginAttack()
         {
-            if(owner == null || !canAttack){
+            if(owner == null || !isAttacking){
                 return;
             }
 
@@ -67,39 +69,40 @@ namespace WaveAttack
                 BaseProjectile bullet = new BaseProjectile(spawnPos, targetDir, damage, enemyProjectile);
                 GameManager.Instance.AddProjectile(bullet);
             }
-
-
-
-
         }
         public override void ContinueAttack(GameTime gameTime)
         {
-            
-        }
-
-
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
-        {
-            if (owner == null)
+            if (owner == null){
                 return;
+            }
 
-            Vector2 direction = (owner is Player)
-                ? Mouse.GetState().Position.ToVector2() - owner.position
-                : GameManager.Instance.player.position - owner.position;
+            Vector2 direction = (owner is Player) ? Mouse.GetState().Position.ToVector2() - owner.position : GameManager.Instance.player.position - owner.position;
 
-            float angle = (float)Math.Atan2(direction.Y, direction.X);
-
-            spriteBatch.Draw(
-                texture,
-                owner.position,
-                null,
-                Color.White,
-                angle,
-                new Vector2(texture.Width / 2f, texture.Height / 2f),
-                scale,
-                SpriteEffects.None,
-                0f
-            );
+            rotation = (float)Math.Atan2(direction.Y, direction.X);
+            if((MathHelper.PiOver2 < rotation) || (rotation < -MathHelper.PiOver2)){
+                spriteEffects |= SpriteEffects.FlipVertically;
+            }
+            direction.Normalize();
+            position = owner.position + direction * 20f;
         }
+
+
+        /*public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            if (owner == null){
+                return;
+            }
+                
+
+            Vector2 direction = (owner is Player) ? Mouse.GetState().Position.ToVector2() - owner.position : GameManager.Instance.player.position - owner.position;
+            
+
+            rotation = (float)Math.Atan2(direction.Y, direction.X);
+            if((MathHelper.PiOver2 < rotation) || (rotation < -MathHelper.PiOver2)){
+                spriteEffects |= SpriteEffects.FlipVertically;
+            }
+
+            spriteBatch.Draw(texture, owner.position, null, Color.White, rotation, rectangleSize, scale, spriteEffects, 0f);
+        }*/
     }
 }
