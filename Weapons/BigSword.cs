@@ -10,105 +10,92 @@ namespace WaveAttack.Weapons
 {
     public class BigSword : Weapon
     {
-        float swingArc = MathHelper.PiOver2;
-        private float distanceFromOwner = 30f;
-        /*float currentRotationOffset;
-        Vector2 origin;
-        Vector2 swingDir;
-        bool isFlipped;*/
-        
+        private float swingArc = MathHelper.PiOver4; // 45 degrees
+        private float startRotation;
+        private float endRotation;
+        private float currentRotation;
+        private float distanceFromOwner = 20f; // <-- customizable distance
+        private bool isFlipped;
+        protected Vector2[] hitBoxVertices;
+        protected float angle;
 
         
-        public BigSword(BaseEntity owner) : base("BigSword", 20, 1.2f, FileManager.GetTexture("BigSword"),1, 0.025f, 1f, owner){;
+        public BigSword(BaseEntity owner) : base("BigSword", 200, 1.2f, FileManager.GetTexture("BigSword"),1, 0.025f, 1f, owner){
 
         }
 
-        public override void BeginAttack()
-        {
-            /*currentRotationOffset = -swingArc / 2f;
+        public override void BeginAttack(){
             hitTargets.Clear();
             attackTimer = 0f;
             isFlipped = direction.X < 0;
-            currentRotationOffset = (isFlipped ? 1 : -1) * swingArc / 2f;*/
+
+            rotation = (float)Math.Atan2(direction.Y, direction.X) + (float)Math.PI  / 2f;
+            startRotation = rotation - swingArc;
+            endRotation = rotation + swingArc;
+            /*if(!isFlipped){
+                spriteEffects = SpriteEffects.FlipVertically;
+            }*/
         }
 
-        public override void ContinueAttack(GameTime gameTime)
-        {
-            /*attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (attackTimer >= attackDuration)
-            {
-                isAttacking = false;
-                cooldownTimer = TimeSpan.Zero;
-                return;
+        public override void ContinueAttack(GameTime gameTime){
+            float progress = attackTimer / attackDuration;
+            currentRotation = isFlipped ? MathHelper.Lerp(endRotation, startRotation, progress) : MathHelper.Lerp(startRotation, endRotation, progress);
+        
+            position = owner.position + (new Vector2(MathF.Cos(currentRotation - MathHelper.PiOver2), MathF.Sin(currentRotation - MathHelper.PiOver2)) * distanceFromOwner);
+
+            Vector2 forward = new Vector2(MathF.Cos(currentRotation - MathHelper.PiOver2), MathF.Sin(currentRotation - MathHelper.PiOver2)) * distanceFromOwner;
+            if (forward != Vector2.Zero){
+                forward.Normalize();
             }
-            
-            
-            float t = attackTimer / attackDuration;
-            float swingAngle = swingArc * (isFlipped ? (1 - t) : t);
-            float currentAngle = rotation + currentRotationOffset + swingAngle;
+                
+            Vector2 perp = new Vector2(-forward.Y, forward.X);
 
-            swingDir = new Vector2((float)Math.Cos(currentAngle), (float)Math.Sin(currentAngle));
-            Vector2 playerPos = GameManager.Instance.entities[0].position;
-            origin =  playerPos + swingDir * (swordHeight / 2);*/
+            Vector2 swordForward = forward * (swordHeight / 2f);
+            Vector2 swordSide = perp * (swordWidth / 2f);
 
-           /* if (isFlipped)
-            {
-                origin.X = 2 * playerPos.X - origin.X;
-                //origin.X = playerPos.X - (origin.X - playerPos.X);
-            }*/
+            Vector2 topLeft = position - swordForward - swordSide;
+            Vector2 topRight = position - swordForward + swordSide;
+            Vector2 bottomLeft = position + swordForward - swordSide;
+            Vector2 bottomRight = position + swordForward + swordSide;
 
-            /*Vector2 perp = new Vector2(-swingDir.Y, swingDir.X);
-            Vector2 forward = swingDir * (swordHeight);
-            Vector2 side = perp * (swordWidth);
+            hitBoxVertices = new[] { topLeft, topRight, bottomRight, bottomLeft };
 
-            Vector2 topLeft = origin - forward - side;
-            Vector2 topRight = origin - forward + side;
-            Vector2 bottomLeft = origin + forward - side;
-            Vector2 bottomRight = origin + forward + side;
+            //UpdateRotatedHitBox();
 
-            Vector2[] hitBox = new[] { topLeft, topRight, bottomRight, bottomLeft };
+            //var swordVertices = GetSwordVertices();
 
             foreach (var entity in GameManager.Instance.entities)
             {
-                if (entity is BaseEnemy enemy && enemy.isActive && !hitTargets.Contains(enemy))
-                {
-                    if (GameManager.Instance.IsPointInsidePolygon(enemy.hitBox, hitBox))
-                    {
-                        enemy.TakeDamage(damage);
-                        hitTargets.Add(enemy);
+                if(entity is BaseEntity target){
+                    if((owner is Player && entity is BaseEnemy)||(owner is BaseEnemy && entity is Player)){
+                        if (GameManager.Instance.IsPointInsidePolygon(entity.hitBox, hitBoxVertices))
+                        {
+                            target.TakeDamage(damage);
+                            hitTargets.Add(target);
+                        }
                     }
                 }
-            }*/
+            }
         }
-
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            /*if (!isAttacking)
+            float rotation = currentRotation - MathHelper.PiOver2 + MathHelper.PiOver4;
+            if (!isAttacking)
                 return;
-
-            float t = attackTimer / attackDuration;
-            float swingAngle = swingArc * (isFlipped ? (1 - t) : t);
-            float currentAngle = rotation + currentRotationOffset + swingAngle;
-            //float drawRotation = isFlipped ? currentAngle - MathF.PI : currentAngle;
+            System.Console.WriteLine(currentRotation);
+            
 
             spriteBatch.Draw(
                 texture,
-                origin,
+                position,
                 null,
                 Color.White,
-                currentAngle,
-                new Vector2(texture.Width / 2f, texture.Height / 2f), // origin of texture
+                rotation,
+                rectangleSize,
                 scale,
-                isFlipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
+                spriteEffects,
                 0f
-            );*/
+            );
         }
-
-
-
-
-
-
-
     }
 }

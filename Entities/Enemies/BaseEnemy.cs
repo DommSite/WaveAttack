@@ -41,8 +41,10 @@ namespace WaveAttack.Entities.Enemies
             distanceFromPlayer = Vector2.Distance(position, player.position);
             
             if ((direction != Vector2.Zero) && (distanceFromPlayer >= wantedDistanceFromPlayer)){
-                direction.Normalize();           
-                position += direction * speed;
+                direction.Normalize();
+                if(!weapon.isAttacking){
+                    position += direction * speed;
+                }           
             }
         }
 

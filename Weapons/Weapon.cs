@@ -12,7 +12,7 @@ namespace WaveAttack.Weapons
         protected TimeSpan cooldownTimer = TimeSpan.Zero;
         protected HashSet<BaseEntity> hitTargets = new HashSet<BaseEntity>();
         protected bool canAttack = true;
-        protected bool isAttacking = false;
+        public bool isAttacking = false;
         protected float attackTimer = 0f;
         protected string name { get; }
         protected int damage { get; }

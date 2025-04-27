@@ -22,6 +22,7 @@ namespace WaveAttack.Entities
         private TimeSpan cooldownTimer = TimeSpan.Zero;
         private bool staminaEmpty = false;
         public int killCount = 0;
+        private bool isFlipped;
 
         public List<Weapon> GetWeapons(){
             return inventory;
@@ -49,6 +50,9 @@ namespace WaveAttack.Entities
             ChangeWeapon();
             weapon?.Update(gameTime);
             hitBox = new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale), (int)(texture.Height * scale));
+            if(isFlipped){
+                spriteEffects = SpriteEffects.FlipHorizontally;
+            }
         }
 
         public void ChangeWeapon(){
@@ -85,6 +89,9 @@ namespace WaveAttack.Entities
             if(mState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released) {
                 weapon?.Use(gameTime, mState.Position.ToVector2());
             }  
+            if(mState.Position.X < 0){
+                isFlipped = true;
+            }
             oldState = mState;
         }
 
@@ -157,7 +164,13 @@ namespace WaveAttack.Entities
                 direction.Normalize();
             }
             ApplyRepulsion(); 
-            position += direction*runSpeed;        
+            position += direction*runSpeed;      
+            if(direction.X < 0){
+                isFlipped = true;
+            }
+            if(direction.X > 0){
+                isFlipped = false;
+            }
             
         }
 

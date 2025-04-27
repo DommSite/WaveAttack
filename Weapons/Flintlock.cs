@@ -40,6 +40,7 @@ namespace WaveAttack.Weapons
             isAttacking = true;
             attackTimer = 0f;
             cooldownTimer = TimeSpan.Zero;
+            
 
             Vector2 targetDir;
 
@@ -56,6 +57,7 @@ namespace WaveAttack.Weapons
 
             if (targetDir != Vector2.Zero)
             {
+                rotation = (float)Math.Atan2(targetDir.Y, targetDir.X);
                 targetDir.Normalize();
                 Vector2 spawnPos = owner.position + targetDir * 10f;
                 bool enemyProjectile;
@@ -87,7 +89,7 @@ namespace WaveAttack.Weapons
         }
 
 
-        /*public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             if (owner == null){
                 return;
@@ -103,6 +105,6 @@ namespace WaveAttack.Weapons
             }
 
             spriteBatch.Draw(texture, owner.position, null, Color.White, rotation, rectangleSize, scale, spriteEffects, 0f);
-        }*/
+        }
     }
 }
