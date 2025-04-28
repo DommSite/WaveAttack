@@ -25,6 +25,30 @@
 /processorParam:TextureFormat=Color
 /build:BigSword.png
 
+#begin BoneCrack.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:BoneCrack.mp3
+
+#begin BulletHit.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:BulletHit.mp3
+
+#begin ChunkyEnemy.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ChunkyEnemy.png
+
 #begin EnemySniper.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -68,6 +92,42 @@
 /processorParam:TextureFormat=Compressed
 /build:GameFont.spritefont
 
+#begin Gunshot.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Gunshot.mp3
+
+#begin Hurt1Retro.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Hurt1Retro.mp3
+
+#begin Hurt2.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Hurt2.mp3
+
+#begin Hurt3.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Hurt3.mp3
+
+#begin IrelanderProbing.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:IrelanderProbing.mp3
+
+#begin ManGurgleDeath.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ManGurgleDeath.mp3
+
 #begin Player.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -91,6 +151,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ProjectileBullet.png
+
+#begin Slash.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Slash.mp3
+
+#begin Stab.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Stab.mp3
 
 #begin Sword.png
 /importer:TextureImporter

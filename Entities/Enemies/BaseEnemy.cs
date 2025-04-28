@@ -16,7 +16,7 @@ namespace WaveAttack.Entities.Enemies
 
 
         public BaseEnemy(Texture2D texture, Vector2 position, float scale, int health, float speed, double attackCooldown, float wantedDistanceFromPlayer)
-        : base(texture, position, scale, health, speed){
+        : base(texture, position, scale, health, speed, 0.3f){
             this.attackCooldown = TimeSpan.FromSeconds(attackCooldown);
             this.wantedDistanceFromPlayer = wantedDistanceFromPlayer;
         }

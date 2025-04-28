@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using WaveAttack.Entities;
 using WaveAttack.Entities.Enemies;
+using WaveAttack;
 
 
 namespace WaveAttack
@@ -22,6 +23,11 @@ namespace WaveAttack
         private Random random = new Random();
         private TimeSpan spawnTimer = TimeSpan.Zero;
         private TimeSpan spawnInterval = TimeSpan.FromSeconds(0.25);
+        public float MasterVolume = 1;
+        private GameState currentState = GameState.MainMenu;
+        private MenuManager menuManager;
+
+
 
 
         public void Initialize(Game1 game, GraphicsDevice graphicsDevice)
@@ -30,6 +36,7 @@ namespace WaveAttack
             entities.Add(player);
             
             hud = new HUD(player, graphicsDevice);
+            menuManager = new MenuManager(this);
         }
 
         public void LoadContent(Game1 game){
@@ -38,40 +45,63 @@ namespace WaveAttack
 
         public void Update(GameTime gameTime)
         {
-            spawnTimer += gameTime.ElapsedGameTime;
-            
-            for (int i = entities.Count - 1; i >= 0; i--)
+            if (currentState == GameState.Playing)
             {
-                entities[i].Update(gameTime);
-                if (!entities[i].isActive){
-                    if(entities[i] is BaseEntity){
-                        ((BaseEntity)entities[i]).Die();
-                    }
-                    entities.RemoveAt(i);
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                {
+                    ChangeState(GameState.Paused);
                 }
-            }
 
-            if (spawnTimer >= spawnInterval)
-            {
-                SpawnRandomEnemy();
-                spawnTimer = TimeSpan.Zero;
+                spawnTimer += gameTime.ElapsedGameTime;
+            
+                for (int i = entities.Count - 1; i >= 0; i--)
+                {
+                    entities[i].Update(gameTime);
+                    if (!entities[i].isActive){
+                        if(entities[i] is BaseEntity){
+                            ((BaseEntity)entities[i]).Die();
+                        }
+                        entities.RemoveAt(i);
+                    }
+                }
+
+                if (spawnTimer >= spawnInterval)
+                {
+                    SpawnRandomEnemy();
+                    spawnTimer = TimeSpan.Zero;
+                }
+                player.weapon.Update(gameTime);
             }
-            player.weapon.Update(gameTime);
+            else
+            {
+                menuManager.Update(currentState);
+            }
+            
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            foreach (var entity in entities){
-                if(entity is not Player){
-                    entity.Draw(spriteBatch, gameTime);
-                    if(entity is BaseEntity baseEntity){
-                        baseEntity.weapon?.Draw(spriteBatch, gameTime);
-                    }   
-                }
-            } 
-            player.Draw(spriteBatch, gameTime);
-            player.weapon?.Draw(spriteBatch,gameTime);
-            hud.Draw(spriteBatch);
+            if (currentState == GameState.Playing)
+            {
+                foreach (var entity in entities){
+                    if(entity is not Player){
+                        entity.Draw(spriteBatch, gameTime);
+                        if(entity is BaseEntity baseEntity){
+                            baseEntity.weapon?.Draw(spriteBatch, gameTime);
+                        }   
+                    }
+                } 
+                player.Draw(spriteBatch, gameTime);
+                player.weapon?.Draw(spriteBatch,gameTime);
+                hud.Draw(spriteBatch);
+            }
+            else
+            {
+                menuManager.Draw(spriteBatch, currentState);
+            }
+
+
+            
 
             
         }
@@ -190,5 +220,10 @@ namespace WaveAttack
             
             return point.X < xIntersection;
         } 
+
+        public void ChangeState(GameState newState)
+        {
+            currentState = newState;
+        }
     }
 }

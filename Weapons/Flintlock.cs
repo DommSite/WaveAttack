@@ -9,7 +9,7 @@ namespace WaveAttack.Weapons
 {
     public class Flintlock : Weapon
     {
-        public Flintlock(BaseEntity owner) : base("Flintlock", 40, 2f, FileManager.GetTexture("Flintlock"),2, 0.04f, 1f, owner){
+        public Flintlock(BaseEntity owner) : base("Flintlock", 40, 2f, FileManager.GetTexture("Flintlock"),2, 0.04f, 1f, owner, FileManager.GetSound("Gunshot"),1 ,1 ,1){
             spriteEffects = SpriteEffects.FlipHorizontally;
         }
 

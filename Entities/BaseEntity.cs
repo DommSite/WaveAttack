@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using SharpFont.Cache;
 using WaveAttack.Weapons;
@@ -13,10 +14,16 @@ namespace WaveAttack.Entities
         protected float speed;
         public  Weapon weapon {get; protected set;}
         protected float repulsionStrength = 0.2f;
+        protected SoundEffect hurt;
+        protected float volume = 1;
+        protected float pitch = 1;
+        protected float pan = 1;
 
-        public BaseEntity(Texture2D texture, Vector2 position, float scale, int health, float speed) : base(texture, position, scale){
+        public BaseEntity(Texture2D texture, Vector2 position, float scale, int health, float speed, float volume) : base(texture, position, scale){
             this.health = health;
             this.speed = speed;
+            this.volume = volume;
+            hurt = FileManager.GetSound("Hurt1Retro");
         }
         public abstract void Die();
         public abstract void Move(GameTime gameTime);
@@ -24,6 +31,7 @@ namespace WaveAttack.Entities
 
         public void TakeDamage(int damage){
             health -= damage;
+            hurt.Play(volume * GameManager.Instance.MasterVolume, pitch, pan);
             if(health <= 0){
                 health = 0;
                 Die();

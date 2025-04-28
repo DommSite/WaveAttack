@@ -28,7 +28,7 @@ namespace WaveAttack.Entities
             return inventory;
         }
     
-        public Player(Vector2 position) : base(FileManager.GetTexture("Player"), position, 0.02f, 100, 1f){
+        public Player(Vector2 position) : base(FileManager.GetTexture("Player"), position, 0.02f, 100, 1f, 1){
             inventory.Add(new Sword(this));
             inventory.Add(new BigSword(this));
             inventory.Add(new Flintlock(this));

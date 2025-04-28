@@ -20,7 +20,7 @@ namespace WaveAttack.Weapons
         protected float angle;
 
         
-        public BigSword(BaseEntity owner) : base("BigSword", 200, 1.2f, FileManager.GetTexture("BigSword"),1, 0.025f, 1f, owner){
+        public BigSword(BaseEntity owner) : base("BigSword", 200, 1.2f, FileManager.GetTexture("BigSword"),1, 0.025f, 1f, owner, FileManager.GetSound("Slash"), 1, 1, 1){
 
         }
 

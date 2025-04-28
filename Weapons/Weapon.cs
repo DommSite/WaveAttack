@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using WaveAttack.Entities;
 
 namespace WaveAttack.Weapons
@@ -27,10 +29,14 @@ namespace WaveAttack.Weapons
         protected float swordHeight;
         protected float swordWidth;
         protected BaseEntity owner;
+        protected SoundEffect soundEffect;
+        protected float volume;
+        protected float pitch;
+        protected float pan;
 
 
 
-        public Weapon(string name, int damage, float attackSpeed, Texture2D texture, int weaponNumber, float scale, float attackDuration, BaseEntity owner) : base(texture, Vector2.Zero, scale)
+        public Weapon(string name, int damage, float attackSpeed, Texture2D texture, int weaponNumber, float scale, float attackDuration, BaseEntity owner, SoundEffect soundEffect, float volume, float pitch, float pan) : base(texture, Vector2.Zero, scale)
         {
             this.name = name;
             this.damage = damage;
@@ -39,8 +45,15 @@ namespace WaveAttack.Weapons
             this.attackDuration = attackDuration;
             this.cooldownTime = TimeSpan.FromSeconds(attackDuration*1.5);
             this.owner = owner;
+            this.soundEffect = soundEffect;
+            this.volume = volume;
+            this.pitch = pitch;
+            this.pan = pan;
 
 
+            if(owner is not Player){
+                this.volume = volume/3;
+            }
             swordWidth = texture.Width * scale;
             swordHeight = texture.Height * scale;
         }
@@ -70,6 +83,7 @@ namespace WaveAttack.Weapons
             rotation = (float)Math.Atan2(direction.Y, direction.X);  
 
             BeginAttack();
+            soundEffect.Play(volume* GameManager.Instance.MasterVolume, pitch, pan);
         }
         
 

@@ -12,8 +12,9 @@ namespace WaveAttack.Weapons
         
         protected Vector2[] hitBoxVertices;
 
-        public Sword(BaseEntity owner) : base("Sword", 15, 1.5f, FileManager.GetTexture("Sword"), 0, 0.02f, 0.5f, owner){       
-            hitBoxVertices = new Vector2[4];         
+        public Sword(BaseEntity owner) : base("Sword", 15, 1.5f, FileManager.GetTexture("Sword"), 0, 0.02f, 0.5f, owner, FileManager.GetSound("Stab"), 1, 1, 1){       
+            hitBoxVertices = new Vector2[4];
+                 
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
