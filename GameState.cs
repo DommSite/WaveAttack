@@ -7,6 +7,7 @@ namespace WaveAttack
         Paused,
         Settings,
         Leaderboard,
-        Exiting
+        Exiting,
+        ConfirmBackToMenu
     }
 }

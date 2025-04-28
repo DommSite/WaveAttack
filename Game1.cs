@@ -10,6 +10,7 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    public static Game1 Instance { get; private set; }
     //private List<BaseClass> entities = new List<BaseClass>();
     //private BulletSystem bulletSystem;
     //Texture2D bullet;
@@ -20,6 +21,7 @@ public class Game1 : Game
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+        Instance = this;
     }
 
     protected override void Initialize()
@@ -41,9 +43,9 @@ public class Game1 : Game
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+        /*if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
-
+*/
         // TODO: Add your update logic here
 
         GameManager.Instance.Update(gameTime);

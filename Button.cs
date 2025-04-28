@@ -11,9 +11,11 @@ namespace WaveAttack
         private string text;
         private Action onClick;
         private bool isHovered;
+        private MouseState oldState;
 
         private static Texture2D pixel;
         private static SpriteFont font;
+        
 
         public Button(Rectangle bounds, string text, Action onClick)
         {
@@ -22,11 +24,11 @@ namespace WaveAttack
             this.onClick = onClick;
         }
 
-        public static void LoadContent()
+        public static void LoadContent(GraphicsDevice graphicsDevice)
         {
             if (pixel == null)
             {
-                pixel = new Texture2D(GraphicsDevice, 1, 1);
+                pixel = new Texture2D(graphicsDevice, 1, 1);
                 pixel.SetData(new[] { Color.White });
             }
 
@@ -40,10 +42,11 @@ namespace WaveAttack
         {
             isHovered = bounds.Contains(mouse.Position);
 
-            if (isHovered && mouse.LeftButton == ButtonState.Pressed)
+            if (isHovered && mouse.LeftButton == ButtonState.Pressed && !oldState.LeftButton.Equals(ButtonState.Pressed))
             {
                 onClick?.Invoke();
             }
+            oldState = mouse;
         }
 
         public void Draw(SpriteBatch spriteBatch)

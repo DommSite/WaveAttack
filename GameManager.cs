@@ -26,6 +26,8 @@ namespace WaveAttack
         public float MasterVolume = 1;
         private GameState currentState = GameState.MainMenu;
         private MenuManager menuManager;
+        private KeyboardState previousKeyboardState;
+        private GraphicsDevice graphicsDevice;
 
 
 
@@ -36,7 +38,8 @@ namespace WaveAttack
             entities.Add(player);
             
             hud = new HUD(player, graphicsDevice);
-            menuManager = new MenuManager(this);
+            menuManager = new MenuManager(graphicsDevice);
+            this.graphicsDevice = graphicsDevice;
         }
 
         public void LoadContent(Game1 game){
@@ -45,9 +48,10 @@ namespace WaveAttack
 
         public void Update(GameTime gameTime)
         {
+            KeyboardState keyboardState = Keyboard.GetState();
             if (currentState == GameState.Playing)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                if (keyboardState.IsKeyDown(Keys.Escape) && previousKeyboardState.IsKeyUp(Keys.Escape))
                 {
                     ChangeState(GameState.Paused);
                 }
@@ -72,10 +76,18 @@ namespace WaveAttack
                 }
                 player.weapon.Update(gameTime);
             }
+            else if(currentState == GameState.Paused){
+                if (keyboardState.IsKeyDown(Keys.Escape) && previousKeyboardState.IsKeyUp(Keys.Escape))
+                    {
+                        ChangeState(GameState.Playing);
+                    }
+                    menuManager.Update(currentState);
+            }
             else
             {
                 menuManager.Update(currentState);
             }
+            previousKeyboardState = keyboardState;
             
         }
 
@@ -225,5 +237,22 @@ namespace WaveAttack
         {
             currentState = newState;
         }
+
+        public void Exit(){
+            Game1.Instance.Exit();
+        }
+
+    public void ResetGame(){
+        entities.Clear();  // Remove all existing entities
+        player = new Player(new Vector2(400, 300)); // Respawn player
+        entities.Add(player);
+
+        hud = new HUD(player, graphicsDevice); // Recreate HUD
+    }
+
+
+
+
+
     }
 }
