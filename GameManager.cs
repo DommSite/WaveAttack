@@ -28,12 +28,12 @@ namespace WaveAttack
         private MenuManager menuManager;
         private KeyboardState previousKeyboardState;
         private GraphicsDevice graphicsDevice;
+        private GameState previousState;
 
 
 
 
-        public void Initialize(Game1 game, GraphicsDevice graphicsDevice)
-        { 
+        public void Initialize(Game1 game, GraphicsDevice graphicsDevice){ 
             player = new Player(new Vector2(400, 300));
             entities.Add(player);
             
@@ -46,8 +46,7 @@ namespace WaveAttack
             FileManager.LoadContent(game.Content);
         }
 
-        public void Update(GameTime gameTime)
-        {
+        public void Update(GameTime gameTime){
             KeyboardState keyboardState = Keyboard.GetState();
             if (currentState == GameState.Playing)
             {
@@ -91,8 +90,7 @@ namespace WaveAttack
             
         }
 
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
-        {
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime){
             if (currentState == GameState.Playing)
             {
                 foreach (var entity in entities){
@@ -174,8 +172,7 @@ namespace WaveAttack
         }      
 
 
-        /*public Vector2 RotatePoint(Vector2 point, Vector2 center, float angle)
-        {
+        /*public Vector2 RotatePoint(Vector2 point, Vector2 center, float angle){
             float cosAngle = (float)Math.Cos(angle);
             float sinAngle = (float)Math.Sin(angle);
    
@@ -188,8 +185,7 @@ namespace WaveAttack
         }*/
 
 
-        public bool IsPointInsidePolygon(Rectangle entityHitBox, Vector2[] polygon)
-        {
+        public bool IsPointInsidePolygon(Rectangle entityHitBox, Vector2[] polygon){
             int intersections = 0;
            
             Vector2 point = new Vector2(entityHitBox.X + entityHitBox.Width / 2, entityHitBox.Y + entityHitBox.Height / 2);
@@ -210,8 +206,7 @@ namespace WaveAttack
         }
 
 
-        private bool DoIntersect(Vector2 point, Vector2 vertex1, Vector2 vertex2)
-        {
+        private bool DoIntersect(Vector2 point, Vector2 vertex1, Vector2 vertex2){
             
             if (vertex1.Y > vertex2.Y)
             {
@@ -233,22 +228,28 @@ namespace WaveAttack
             return point.X < xIntersection;
         } 
 
-        public void ChangeState(GameState newState)
-        {
-            currentState = newState;
+        public void ChangeState(GameState newState){
+            if (newState != currentState){
+                previousState = currentState;
+                currentState = newState;
+            }
         }
 
         public void Exit(){
             Game1.Instance.Exit();
         }
 
-    public void ResetGame(){
-        entities.Clear();  // Remove all existing entities
-        player = new Player(new Vector2(400, 300)); // Respawn player
-        entities.Add(player);
+        public void ResetGame(){
+            entities.Clear();  // Remove all existing entities
+            player = new Player(new Vector2(400, 300)); // Respawn player
+            entities.Add(player);
 
-        hud = new HUD(player, graphicsDevice); // Recreate HUD
-    }
+            hud = new HUD(player, graphicsDevice); // Recreate HUD
+        }
+
+        public void ReturnToPreviousState(){
+            ChangeState(previousState);
+        }
 
 
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/johan/Documents/GitHub/WaveAttack/Content/BulletHit.mp3</SourceFile>
-  <SourceTime>2025-04-28T16:29:22.6871535+02:00</SourceTime>
-  <DestFile>C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/BulletHit.xnb</DestFile>
-  <DestTime>2025-04-28T16:59:01.9843803+02:00</DestTime>
+  <SourceFile>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/BulletHit.mp3</SourceFile>
+  <SourceTime>2025-04-29T14:38:58.4488959+02:00</SourceTime>
+  <DestFile>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/BulletHit.xnb</DestFile>
+  <DestTime>2025-04-29T14:39:56.9912815+02:00</DestTime>
   <Importer>Mp3Importer</Importer>
   <ImporterTime>2024-08-16T19:05:56+02:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>

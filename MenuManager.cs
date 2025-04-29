@@ -68,13 +68,27 @@ namespace WaveAttack
                 new LeaderboardEntry("EEE", 5000),
             };
 
-            backButton = new Button(new Rectangle(10, 10, 100, 40), "Back", () => GameManager.Instance.ChangeState(GameState.MainMenu));
+            backButton = new Button(new Rectangle(10, 10, 100, 40), "Back", () => GameManager.Instance.ReturnToPreviousState());
         }
 
         public void Update(GameState currentState)
         {
             MouseState mouse = Mouse.GetState();
-            if (currentState == GameState.ConfirmBackToMenu)
+
+            overlayAlpha = MathHelper.Clamp(overlayAlpha + ((currentState == GameState.ConfirmBackToMenu ? 1 : -1) * overlayFadeSpeed * (1f / 60f)),0f, 0.6f);
+
+
+            if (currentState == GameState.MainMenu)
+                mainMenuButtons.ForEach(b => b.Update(mouse));
+            else if (currentState == GameState.Paused)
+                pauseMenuButtons.ForEach(b => b.Update(mouse));
+            else if (currentState == GameState.ConfirmBackToMenu)
+                confirmMenuButtons.ForEach(b => b.Update(mouse));
+            else if (currentState == GameState.Leaderboard)
+                backButton.Update(mouse);
+
+
+            /*if (currentState == GameState.ConfirmBackToMenu)
             {
                 
                 overlayAlpha += overlayFadeSpeed * (float)(1f / 60f); 
@@ -105,14 +119,39 @@ namespace WaveAttack
             else if (currentState == GameState.Leaderboard)
             {
                 backButton.Update(mouse);
-            }
+            }*/
 
         }
 
         public void Draw(SpriteBatch spriteBatch, GameState currentState)
         {
-
             if (currentState == GameState.MainMenu)
+                mainMenuButtons.ForEach(b => b.Draw(spriteBatch));
+
+            else if (currentState == GameState.Paused)
+                pauseMenuButtons.ForEach(b => b.Draw(spriteBatch));
+
+            else if (currentState == GameState.ConfirmBackToMenu)
+            {
+                var screen = Game1.Instance.GraphicsDevice.Viewport.Bounds;
+                spriteBatch.Draw(overlayTexture, screen, Color.Black * overlayAlpha);
+                UIHelper.DrawCenteredText(spriteBatch, font, "Are you sure? Progress will be lost!", new Rectangle(0, 150, screen.Width, 50), Color.White);
+                confirmMenuButtons.ForEach(b => b.Draw(spriteBatch));
+            }
+
+            else if (currentState == GameState.Leaderboard)
+            {
+                backButton.Draw(spriteBatch);
+
+                UIHelper.DrawSplitLeaderboard(
+                    spriteBatch: spriteBatch,
+                    font: font,
+                    entries: leaderboardEntries,
+                    graphicsDevice: Game1.Instance.GraphicsDevice,
+                    pixel: pixel
+                );
+            }
+            /*if (currentState == GameState.MainMenu)
             {
                 foreach (var button in mainMenuButtons)
                     button.Draw(spriteBatch);
@@ -124,7 +163,7 @@ namespace WaveAttack
                     button.Draw(spriteBatch);
             }
 
-             else if (currentState == GameState.ConfirmBackToMenu)
+            else if (currentState == GameState.ConfirmBackToMenu)
             {
                 spriteBatch.Draw(overlayTexture, new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height),Color.Black * overlayAlpha);
 
@@ -178,7 +217,7 @@ namespace WaveAttack
                     spriteBatch.DrawString(font, entry.Name, namePosition, Color.White);
                     spriteBatch.DrawString(font, entry.Score.ToString(), scorePosition, Color.White);
                 }
-            }
+            }*/
 
         }
     }
