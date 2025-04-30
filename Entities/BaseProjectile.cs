@@ -18,12 +18,12 @@ namespace WaveAttack.Entities
             this.damage = damage;
             this.isEnemyProjectile = isEnemyProjectile;
             this.direction.Normalize();
-            rotation = (float)Math.Atan2(direction.Y, direction.X);
+            rotation = (float)Math.Atan2(this.direction.Y, this.direction.X);
         }
 
         public override void Update(GameTime gameTime)
         { 
-            position += direction * speedProjectile * (float)gameTime.ElapsedGameTime.TotalSeconds;;
+            position += direction * speedProjectile * (float)gameTime.ElapsedGameTime.TotalSeconds;
             hitBox = new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale), (int)(texture.Height * scale));
             if(isActive){
                 CheckCollision();

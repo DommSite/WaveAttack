@@ -19,16 +19,18 @@ namespace WaveAttack
         public List<BaseClass> entities = new();
         
         private GameManager() { }
+        public GameSettings settings = GameSettings.Load();
+        
         private HUD hud;
         private Random random = new Random();
         private TimeSpan spawnTimer = TimeSpan.Zero;
         private TimeSpan spawnInterval = TimeSpan.FromSeconds(0.25);
         public float MasterVolume = 1;
         private GameState currentState = GameState.MainMenu;
-        private MenuManager menuManager;
+        public MenuManager menuManager;
         private KeyboardState previousKeyboardState;
         private GraphicsDevice graphicsDevice;
-        private GameState previousState;
+        public GameState previousState;
 
 
 
@@ -128,7 +130,7 @@ namespace WaveAttack
             else if(34  <= type && type <= 67){
                 enemy = new GunnerEnemy(GetRandomSpawnPosition());
             }
-            else if(68  <= type && type <= 10){
+            else if(68  <= type && type <= 100){
                 enemy = new ChunkyEnemy(GetRandomSpawnPosition());
             }
             else{
@@ -248,7 +250,12 @@ namespace WaveAttack
         }
 
         public void ReturnToPreviousState(){
-            ChangeState(previousState);
+            if(previousState == GameState.EnterName){
+                ChangeState(GameState.MainMenu);
+            }
+            else{
+                ChangeState(previousState);
+            }     
         }
 
 

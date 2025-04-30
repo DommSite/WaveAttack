@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/ManGurgleDeath.mp3</SourceFile>
-  <SourceTime>2025-04-29T14:38:58.4589047+02:00</SourceTime>
-  <DestFile>C:/Users/Admin/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/ManGurgleDeath.xnb</DestFile>
-  <DestTime>2025-04-29T14:39:59.2298784+02:00</DestTime>
+  <SourceFile>C:/Users/johan/Documents/GitHub/WaveAttack/Content/ManGurgleDeath.mp3</SourceFile>
+  <SourceTime>2025-04-28T16:30:14.6879701+02:00</SourceTime>
+  <DestFile>C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/ManGurgleDeath.xnb</DestFile>
+  <DestTime>2025-04-30T10:55:42.5301443+02:00</DestTime>
   <Importer>Mp3Importer</Importer>
   <ImporterTime>2024-08-16T19:05:56+02:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>

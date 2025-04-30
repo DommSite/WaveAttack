@@ -8,6 +8,8 @@ namespace WaveAttack
         Settings,
         Leaderboard,
         Exiting,
-        ConfirmBackToMenu
+        ConfirmBackToMenu,
+        GameOver,
+        EnterName,
     }
 }

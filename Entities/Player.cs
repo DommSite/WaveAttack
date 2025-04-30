@@ -23,6 +23,7 @@ namespace WaveAttack.Entities
         private bool staminaEmpty = false;
         public int killCount = 0;
         private bool isFlipped;
+         public int score { get; private set; }
 
         public List<Weapon> GetWeapons(){
             return inventory;
@@ -35,6 +36,7 @@ namespace WaveAttack.Entities
 
             weapon = inventory[0];
             selectedWeaponSlot = 0;
+            score = 200000;
         }
         public void test(){
             health++;
@@ -118,6 +120,10 @@ namespace WaveAttack.Entities
             {
                 direction.X += 1;
             }
+            if(kState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.O)) 
+            {
+                health += 10000;
+            }
             if (kState.IsKeyDown(Keys.LeftShift) && direction != Vector2.Zero && !staminaEmpty)
             {
                 drainTimer += gameTime.ElapsedGameTime;
@@ -177,6 +183,14 @@ namespace WaveAttack.Entities
 
         public override void Die(){
             //you ded boi
+            isActive = false;
+            GameManager.Instance.menuManager.OnPlayerDeath(score);
+        }
+
+        public void KillEnemy(int points)
+        {
+            // Add points when killing an enemy
+            score += points;
         }
 
        

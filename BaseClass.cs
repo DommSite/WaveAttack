@@ -30,7 +30,7 @@ namespace WaveAttack
         {
             if (isActive)
             {
-                spriteBatch.Draw(texture, position, null, Color.White, 0, rectangleSize, scale, spriteEffects, 0f);
+                spriteBatch.Draw(texture, position, null, Color.White, rotation, rectangleSize, scale, spriteEffects, 0f);
             }
         }
 

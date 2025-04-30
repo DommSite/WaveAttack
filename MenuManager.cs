@@ -7,17 +7,24 @@ namespace WaveAttack
 {
     public class MenuManager
     {
+        GameState currentState;
         private List<Button> mainMenuButtons;
         private List<Button> pauseMenuButtons;
         private List<Button> confirmMenuButtons;
         private Button backButton;
+        private Button ContinueButton;
+        private List<ISettingsElement> settingsMenuElements;
         private SpriteFont font = FileManager.GetFont("GameFont");
         private Texture2D overlayTexture;
         private float overlayAlpha = 0f;
         private float overlayFadeSpeed = 3f;
         private List<LeaderboardEntry> leaderboardEntries;
         private Vector2 leaderboardSize = new Vector2(500, 600);
-        private static Texture2D pixel;
+        public static Texture2D pixel;
+        private int score;
+        private string playerName = "";
+        private const int MaxNameLength = 3;
+        private KeyboardState previousKeyboardState;
 
 
     
@@ -53,11 +60,26 @@ namespace WaveAttack
                 new Button(new Rectangle(300, 380, 200, 50), "MainMenu", () => GameManager.Instance.ChangeState(GameState.ConfirmBackToMenu))
             };
 
+            settingsMenuElements = new List<ISettingsElement>()
+            {
+                new Slider(new Rectangle(300, 200, 200, 10),
+                    () => GameManager.Instance.settings.Volume,
+                    val => { GameManager.Instance.settings.Volume = val; GameManager.Instance.settings.Save(); }),
+
+                new Toggle(new Rectangle(300, 250, 20, 20),
+                    "Fullscreen",
+                    () => GameManager.Instance.settings.Fullscreen,
+                    val => { GameManager.Instance.settings.Fullscreen = val; GameManager.Instance.settings.Save(); })
+            };
+
             confirmMenuButtons = new List<Button>()
             {
                 new Button(new Rectangle(300, 260, 200, 50), "Yes", () => {GameManager.Instance.ResetGame(); GameManager.Instance.ChangeState(GameState.MainMenu);}),
                 new Button(new Rectangle(300, 320, 200, 50), "No", () => {GameManager.Instance.ChangeState(GameState.Paused);}),
+                
+                
             };
+            settingsMenuElements.Add(new ButtonAdapter(backButton));
 
             leaderboardEntries = new List<LeaderboardEntry>()
             {
@@ -66,159 +88,184 @@ namespace WaveAttack
                 new LeaderboardEntry("CCC", 9000),
                 new LeaderboardEntry("DDD", 8700),
                 new LeaderboardEntry("EEE", 5000),
+                new LeaderboardEntry("AAB", 15000),
+                
             };
+            foreach(var entry in leaderboardEntries){
+                LeaderboardEntry.AddEntry(entry);
+            }
+            
 
             backButton = new Button(new Rectangle(10, 10, 100, 40), "Back", () => GameManager.Instance.ReturnToPreviousState());
+
+            ContinueButton = new Button(new Rectangle((Game1.Instance.GraphicsDevice.Viewport.Width - 250) / 2,/* center horizontally*/   Game1.Instance.GraphicsDevice.Viewport.Height - 60,/* push closer to bottom*/   250,60),"Press here to Continue",() =>
+            {
+                if (LeaderboardEntry.IsViableEntry(score))
+                {
+                    GameManager.Instance.ChangeState(GameState.EnterName);
+                }
+                else
+                {
+                    GameManager.Instance.ChangeState(GameState.MainMenu);
+                }
+            });
         }
 
         public void Update(GameState currentState)
         {
-            MouseState mouse = Mouse.GetState();
+            MouseState mState = Mouse.GetState();
+            KeyboardState kState = Keyboard.GetState();
 
             overlayAlpha = MathHelper.Clamp(overlayAlpha + ((currentState == GameState.ConfirmBackToMenu ? 1 : -1) * overlayFadeSpeed * (1f / 60f)),0f, 0.6f);
 
 
             if (currentState == GameState.MainMenu)
-                mainMenuButtons.ForEach(b => b.Update(mouse));
+                mainMenuButtons.ForEach(b => b.Update(mState));
             else if (currentState == GameState.Paused)
-                pauseMenuButtons.ForEach(b => b.Update(mouse));
+                pauseMenuButtons.ForEach(b => b.Update(mState));
             else if (currentState == GameState.ConfirmBackToMenu)
-                confirmMenuButtons.ForEach(b => b.Update(mouse));
+                confirmMenuButtons.ForEach(b => b.Update(mState));
             else if (currentState == GameState.Leaderboard)
-                backButton.Update(mouse);
-
-
-            /*if (currentState == GameState.ConfirmBackToMenu)
-            {
+                backButton.Update(mState);
+            else if (currentState == GameState.EnterName){
                 
-                overlayAlpha += overlayFadeSpeed * (float)(1f / 60f); 
-                overlayAlpha = MathHelper.Clamp(overlayAlpha, 0f, 0.6f); 
             }
-            else
-            {
                 
-                overlayAlpha -= overlayFadeSpeed * (float)(1f / 60f);
-                overlayAlpha = MathHelper.Clamp(overlayAlpha, 0f, 0.6f);
-            }
-
-            if (currentState == GameState.MainMenu)
-            {
-                foreach (var button in mainMenuButtons)
-                    button.Update(mouse);
-            }
-            else if (currentState == GameState.Paused)
-            {
-                foreach (var button in pauseMenuButtons)
-                    button.Update(mouse);
-            }
-            else if (currentState == GameState.ConfirmBackToMenu)
-            {
-                foreach (var button in confirmMenuButtons)
-                    button.Update(mouse);
-            }
-            else if (currentState == GameState.Leaderboard)
-            {
-                backButton.Update(mouse);
-            }*/
-
+            else if (currentState == GameState.GameOver)
+                ContinueButton.Update(mState);
+            else if (currentState == GameState.Settings)
+                settingsMenuElements.ForEach(e => e.Update(mState));
+                
+            
         }
 
         public void Draw(SpriteBatch spriteBatch, GameState currentState)
         {
-            if (currentState == GameState.MainMenu)
+            this.currentState = currentState;
+            if (this.currentState == GameState.MainMenu)
                 mainMenuButtons.ForEach(b => b.Draw(spriteBatch));
 
-            else if (currentState == GameState.Paused)
+            else if (this.currentState == GameState.Paused)
                 pauseMenuButtons.ForEach(b => b.Draw(spriteBatch));
 
-            else if (currentState == GameState.ConfirmBackToMenu)
+            else if (this.currentState == GameState.ConfirmBackToMenu)
             {
                 var screen = Game1.Instance.GraphicsDevice.Viewport.Bounds;
                 spriteBatch.Draw(overlayTexture, screen, Color.Black * overlayAlpha);
                 UIHelper.DrawCenteredText(spriteBatch, font, "Are you sure? Progress will be lost!", new Rectangle(0, 150, screen.Width, 50), Color.White);
                 confirmMenuButtons.ForEach(b => b.Draw(spriteBatch));
             }
-
-            else if (currentState == GameState.Leaderboard)
+            else if (this.currentState == GameState.Leaderboard)
             {
                 backButton.Draw(spriteBatch);
 
                 UIHelper.DrawSplitLeaderboard(
                     spriteBatch: spriteBatch,
                     font: font,
-                    entries: leaderboardEntries,
+                    entries: LeaderboardEntry.LoadList(),
                     graphicsDevice: Game1.Instance.GraphicsDevice,
                     pixel: pixel
                 );
             }
-            /*if (currentState == GameState.MainMenu)
-            {
-                foreach (var button in mainMenuButtons)
-                    button.Draw(spriteBatch);
+            else if (currentState == GameState.EnterName){
+                UpdateNameEntry(spriteBatch);
+                /*var screen = Game1.Instance.GraphicsDevice.Viewport.Bounds;
+                spriteBatch.Draw(overlayTexture, screen, Color.Black * 0.8f);
+
+                UIHelper.DrawCenteredText(spriteBatch, font, "New High Score!", new Rectangle(0, 150, screen.Width, 50), Color.Yellow);
+                UIHelper.DrawCenteredText(spriteBatch, font, "Enter Your Initials:", new Rectangle(0, 250, screen.Width, 50), Color.White);
+                UIHelper.DrawCenteredText(spriteBatch, font, playerName + "_", new Rectangle(0, 310, screen.Width, 50), Color.Cyan);*/
             }
-
-            else if (currentState == GameState.Paused)
+            else if (currentState == GameState.GameOver)
             {
-                foreach (var button in pauseMenuButtons)
-                    button.Draw(spriteBatch);
+                var screen = Game1.Instance.GraphicsDevice.Viewport.Bounds;
+                spriteBatch.Draw(overlayTexture, screen, Color.Black * 0.8f);
+                UIHelper.DrawCenteredText(spriteBatch, font, "Game Over", new Rectangle(0, 200, screen.Width, 50), Color.White);
+                ContinueButton.Draw(spriteBatch);
             }
+            else if (currentState == GameState.Settings)
+                settingsMenuElements.ForEach(e => e.Draw(spriteBatch));
+           
 
-            else if (currentState == GameState.ConfirmBackToMenu)
+        }
+
+        public void OnPlayerDeath(int score)
+        {
+            this.score = score;
+            
+            GameManager.Instance.ChangeState(GameState.GameOver);
+        }
+        private void UpdateNameEntry(SpriteBatch spriteBatch)
+        {
+            var screen = Game1.Instance.GraphicsDevice.Viewport.Bounds;
+            spriteBatch.Draw(overlayTexture, screen, Color.Black * 0.8f);
+
+            UIHelper.DrawCenteredText(spriteBatch, font, "New High Score!", new Rectangle(0, 150, screen.Width, 50), Color.Yellow);
+            UIHelper.DrawCenteredText(spriteBatch, font, "Enter Your Initials:", new Rectangle(0, 250, screen.Width, 50), Color.White);
+            string nameDisplay = playerName;
+            if (playerName.Length < 3)
             {
-                spriteBatch.Draw(overlayTexture, new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height),Color.Black * overlayAlpha);
-
-                spriteBatch.DrawString(font, "Are you sure? Progress will be lost!", new Vector2(220, 200), Color.White);
-
-                foreach(var button in confirmMenuButtons)
-                    button.Draw(spriteBatch);
+                nameDisplay += new string('_', 3 - playerName.Length);
             }
+            UIHelper.DrawCenteredText(spriteBatch, font, nameDisplay, new Rectangle(0, 310, screen.Width, 100), Color.Cyan);
+            
+            /*int underscoreCount = 3 - playerName.Length;
+            string underscoreLines = new string('\n', underscoreCount - 1) + "_";
+            UIHelper.DrawCenteredText(spriteBatch, font, playerName + underscoreLines, new Rectangle(0, 310, screen.Width, 100), Color.Cyan);*/
 
-            else if (currentState == GameState.Leaderboard)
+            KeyboardState ks = Keyboard.GetState();
+            
+
+            foreach (var key in ks.GetPressedKeys())
             {
-                // Draw back button
-                backButton.Draw(spriteBatch);
-
-                // Calculate center position
-                int screenWidth = Game1.Instance.GraphicsDevice.Viewport.Width;
-                int screenHeight = Game1.Instance.GraphicsDevice.Viewport.Height;
-                Vector2 leaderboardSize = new Vector2(screenWidth * 0.6f, screenHeight * 0.7f); // Resize based on window
-                Vector2 leaderboardPosition = new Vector2((screenWidth - leaderboardSize.X) / 2, (screenHeight - leaderboardSize.Y) / 2);
-
-                // Draw leaderboard background
-                spriteBatch.Draw(pixel, new Rectangle(
-                    (int)leaderboardPosition.X, (int)leaderboardPosition.Y,
-                    (int)leaderboardSize.X, (int)leaderboardSize.Y), Color.DarkSlateGray);
-
-                // Draw leaderboard title
-                Vector2 titlePosition = new Vector2(leaderboardPosition.X + leaderboardSize.X / 2, leaderboardPosition.Y + 20);
-                var titleText = "LEADERBOARD";
-                Vector2 titleOrigin = font.MeasureString(titleText) / 2;
-                spriteBatch.DrawString(font, titleText, titlePosition, Color.White, 0f, titleOrigin, 1.2f, SpriteEffects.None, 0f);
-
-                // Draw column headers (optional)
-                Vector2 nameHeaderPosition = new Vector2(leaderboardPosition.X + 50, leaderboardPosition.Y + 80);
-                Vector2 scoreHeaderPosition = new Vector2(leaderboardPosition.X + leaderboardSize.X - 150, leaderboardPosition.Y + 80);
-                spriteBatch.DrawString(font, "NAME", nameHeaderPosition, Color.LightGray);
-                spriteBatch.DrawString(font, "SCORE", scoreHeaderPosition, Color.LightGray);
-
-                // Draw leaderboard entries
-                int startY = 120;
-                int lineHeight = 40;
-                for (int i = 0; i < leaderboardEntries.Count; i++)
+                if (!previousKeyboardState.IsKeyDown(key))
                 {
-                    var entry = leaderboardEntries[i];
-
-                    Rectangle entryBox = new Rectangle((int)(leaderboardPosition.X + 30),(int)(leaderboardPosition.Y + startY + i * lineHeight),(int)(leaderboardSize.X - 60),lineHeight - 10);
-                    spriteBatch.Draw(pixel, entryBox, Color.Black * 0.5f);
-
-                    Vector2 namePosition = new Vector2(leaderboardPosition.X + 50, leaderboardPosition.Y + startY + i * lineHeight);
-                    Vector2 scorePosition = new Vector2(leaderboardPosition.X + leaderboardSize.X - 150, leaderboardPosition.Y + startY + i * lineHeight);
-
-                    spriteBatch.DrawString(font, entry.Name, namePosition, Color.White);
-                    spriteBatch.DrawString(font, entry.Score.ToString(), scorePosition, Color.White);
+                    if (key >= Keys.A && key <= Keys.Z && playerName.Length < 3)
+                    {
+                        playerName += key.ToString().Substring(0, 1); // Avoid "Keys.A" becoming "A"
+                    }
+                    else if (key == Keys.Back && playerName.Length > 0)
+                    {
+                        playerName = playerName.Substring(0, playerName.Length - 1);
+                    }
+                    else if (key == Keys.Enter && playerName.Length == 3)
+                    {
+                        LeaderboardEntry.AddEntry(new LeaderboardEntry(playerName, score));
+                        playerName = "";
+                        GameManager.Instance.previousState = GameState.MainMenu;
+                        GameManager.Instance.ChangeState(GameState.Leaderboard);
+                    }
                 }
-            }*/
+            }
+            previousKeyboardState = ks;
+        }
 
+        private void HandleNameInput(KeyboardState currentKeyboardState)
+        {
+            // Only allow name input when not already filled up
+            if (playerName.Length < MaxNameLength)
+            {
+                foreach (var key in currentKeyboardState.GetPressedKeys())
+                {
+                    // Check if it's a valid letter or backspace (to delete)
+                    if (key >= Keys.A && key <= Keys.Z && !previousKeyboardState.IsKeyDown(key))
+                    {
+                        playerName += key.ToString().Substring(0, 1); // Only take the first letter of the key
+                    }
+                    else if (key == Keys.Back && playerName.Length > 0 && !previousKeyboardState.IsKeyDown(key))
+                    {
+                        playerName = playerName.Substring(0, playerName.Length - 1); // Remove last character on Backspace
+                    }
+                }
+            }
+
+            // Submit name when player presses Enter (if the name is valid)
+            if (currentKeyboardState.IsKeyDown(Keys.Enter) && !previousKeyboardState.IsKeyDown(Keys.Enter) && playerName.Length > 0)
+            {
+                LeaderboardEntry.AddEntry(new LeaderboardEntry(playerName, score));
+                
+                GameManager.Instance.ChangeState(GameState.Leaderboard); // Go to leaderboard after submitting name
+            }
         }
     }
 }

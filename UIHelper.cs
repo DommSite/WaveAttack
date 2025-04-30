@@ -63,7 +63,7 @@ namespace WaveAttack
                 DrawCenteredText(spriteBatch, font, text, itemRect, textColor);
             }
         }
-
+/*
         public static void DrawSplitLeaderboard(SpriteBatch spriteBatch,SpriteFont font,List<LeaderboardEntry> entries,GraphicsDevice graphicsDevice,Texture2D pixel,int maxEntries = 10,float widthRatio = 0.5f,float heightRatio = 0.6f,int margin = 40,int padding = 10,Color backgroundColor = default,Color boxColor = default,Color textColor = default){
             if (backgroundColor == default) backgroundColor = Color.DarkSlateGray;
             if (boxColor == default) boxColor = Color.Black * 0.5f;
@@ -100,7 +100,16 @@ namespace WaveAttack
                 );
 
                 // Row box
-                spriteBatch.Draw(pixel, rowRect, boxColor);
+                Color rowColor = new Color(212, 175, 55);/*i switch
+                {
+                    0 => new Color(212, 175, 55),    // Gold
+                    1 => new Color(192, 192, 192),   // Silver
+                    2 => new Color(205, 127, 50),    // Bronze
+                    _ => boxColor
+                };*/
+/*
+                spriteBatch.Draw(pixel, rowRect, rowColor);
+                //spriteBatch.Draw(pixel, rowRect, boxColor);
 
                 // Name and score text
                 string name = entry.Name;
@@ -119,6 +128,87 @@ namespace WaveAttack
 
                 spriteBatch.DrawString(font, name, namePos, textColor);
                 spriteBatch.DrawString(font, score, scorePos, textColor);
+            }
+        }*/
+
+        public static void DrawSplitLeaderboard(
+            SpriteBatch spriteBatch,
+            SpriteFont font,
+            List<LeaderboardEntry> entries,
+            GraphicsDevice graphicsDevice,
+            Texture2D pixel,
+            int maxEntries = 10,
+            float widthRatio = 0.5f,
+            float heightRatio = 0.6f,
+            int margin = 40,
+            int rowPadding = 15, // Add vertical padding for better text fit
+            Color? backgroundColor = null,
+            Color? textColor = null
+        )
+        {
+            backgroundColor ??= Color.DarkSlateGray;
+            textColor ??= Color.White;
+
+            var screen = graphicsDevice.Viewport.Bounds;
+            var totalWidth = screen.Width * widthRatio;
+            var totalHeight = screen.Height * heightRatio;
+            var position = new Vector2((screen.Width - totalWidth) / 2, (screen.Height - totalHeight) / 2);
+
+            // Background
+            spriteBatch.Draw(pixel, new Rectangle((int)position.X, (int)position.Y, (int)totalWidth, (int)totalHeight), backgroundColor.Value);
+
+            // Title
+            string title = "LEADERBOARD";
+            var titleSize = font.MeasureString(title);
+            spriteBatch.DrawString(
+                font, title,
+                new Vector2(position.X + totalWidth / 2, position.Y + 20),
+                textColor.Value, 0f, titleSize / 2, 1.2f, SpriteEffects.None, 0f
+            );
+
+            // Spacing
+            float startY = position.Y + 80;
+            float availableHeight = totalHeight - 100;
+            float rowHeight = availableHeight / maxEntries;
+
+            for (int i = 0; i < maxEntries; i++)
+            {
+                var entry = i < entries.Count ? entries[i] : new LeaderboardEntry("---", 0);
+
+                Rectangle rowRect = new Rectangle(
+                    (int)position.X + margin,
+                    (int)(startY + i * rowHeight),
+                    (int)totalWidth - 2 * margin,
+                    (int)(rowHeight - 10)
+                );
+
+                // Podium colors
+                Color rowColor = i switch
+                {
+                    0 => new Color(212, 175, 55),   // Gold
+                    1 => new Color(192, 192, 192),  // Silver
+                    2 => new Color(205, 127, 50),   // Bronze
+                    _ => Color.Black * 0.5f
+                };
+
+                spriteBatch.Draw(pixel, rowRect, rowColor);
+
+                // Texts
+                string name = entry.Name;
+                string score = i < entries.Count ? entry.Score.ToString() : "---";
+
+                Vector2 nameSize = font.MeasureString(name);
+                Vector2 scoreSize = font.MeasureString(score);
+
+                float spacing = 50f;
+                float combinedWidth = nameSize.X + spacing + scoreSize.X;
+                float startX = rowRect.X + (rowRect.Width - combinedWidth) / 2;
+
+                Vector2 namePos = new Vector2(startX, rowRect.Y + (rowRect.Height - nameSize.Y) / 2);
+                Vector2 scorePos = new Vector2(startX + nameSize.X + spacing, rowRect.Y + (rowRect.Height - scoreSize.Y) / 2);
+
+                spriteBatch.DrawString(font, name, namePos, textColor.Value);
+                spriteBatch.DrawString(font, score, scorePos, textColor.Value);
             }
         }
     }

@@ -10,6 +10,8 @@ namespace WaveAttack.Weapons
 {
     public class BigSword : Weapon
     {
+
+        //piece of shit doesnt want to work
         private float swingArc = MathHelper.PiOver4; // 45 degrees
         private float startRotation;
         private float endRotation;
