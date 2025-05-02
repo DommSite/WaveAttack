@@ -83,7 +83,10 @@ namespace WaveAttack.Weapons
             rotation = (float)Math.Atan2(direction.Y, direction.X);  
 
             BeginAttack();
-            soundEffect.Play(volume* GameManager.Instance.MasterVolume, pitch, pan);
+            if(!GameManager.Instance.settings.MuteAll){
+                soundEffect.Play(volume* GameManager.Instance.settings.Volume * GameManager.Instance.settings.SFXVolume, pitch, pan);
+            }
+            
         }
         
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>C:/Users/johan/Documents/GitHub/WaveAttack/Content/Spectre - Opening.mp3</SourceFile>
+  <SourceTime>2025-05-02T19:52:25.2427273+02:00</SourceTime>
+  <DestFile>C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/Spectre - Opening.xnb</DestFile>
+  <DestTime>2025-05-02T20:09:43.0932471+02:00</DestTime>
+  <Importer>Mp3Importer</Importer>
+  <ImporterTime>2024-08-16T19:05:56+02:00</ImporterTime>
+  <Processor>SongProcessor</Processor>
+  <ProcessorTime>2024-08-16T19:05:56+02:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput>
+    <string>C:/Users/johan/Documents/GitHub/WaveAttack/Content/bin/DesktopGL/Content/Spectre - Opening.ogg</string>
+  </BuildOutput>
+</PipelineBuildEvent>

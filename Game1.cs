@@ -8,7 +8,7 @@ namespace WaveAttack;
 
 public class Game1 : Game
 {
-    private GraphicsDeviceManager _graphics;
+    public GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     public static Game1 Instance { get; private set; }
     //private List<BaseClass> entities = new List<BaseClass>();

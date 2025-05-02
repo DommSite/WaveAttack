@@ -31,7 +31,10 @@ namespace WaveAttack.Entities
 
         public void TakeDamage(int damage){
             health -= damage;
-            hurt.Play(volume * GameManager.Instance.MasterVolume, pitch, pan);
+            if(!GameManager.Instance.settings.MuteAll){
+                hurt.Play(volume * GameManager.Instance.settings.Volume * GameManager.Instance.settings.SFXVolume, pitch, pan);
+            }
+            
             if(health <= 0){
                 health = 0;
                 Die();

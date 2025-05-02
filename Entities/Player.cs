@@ -36,7 +36,6 @@ namespace WaveAttack.Entities
 
             weapon = inventory[0];
             selectedWeaponSlot = 0;
-            score = 200000;
         }
         public void test(){
             health++;

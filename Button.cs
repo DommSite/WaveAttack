@@ -7,7 +7,7 @@ namespace WaveAttack
 {
     public class Button
     {
-        private Rectangle bounds;
+        public Rectangle bounds;
         private string text;
         private Action onClick;
         private bool isHovered;

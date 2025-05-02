@@ -11,5 +11,7 @@ namespace WaveAttack
         ConfirmBackToMenu,
         GameOver,
         EnterName,
+        None,
+
     }
 }

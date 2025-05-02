@@ -7,10 +7,11 @@ namespace WaveAttack
 {
     public class Toggle : ISettingsElement
     {
-        Rectangle rect;
-        string label;
-        Func<bool> getter;
-        Action<bool> setter;
+        private Rectangle rect;
+        private string label;
+        private Func<bool> getter;
+        private Action<bool> setter;
+        private MouseState oldMouseState;
 
         public Toggle(Rectangle rect, string label, Func<bool> getter, Action<bool> setter)
         {
@@ -20,12 +21,22 @@ namespace WaveAttack
             this.setter = setter;
         }
 
+        public void SetPosition(Vector2 position)
+        {
+            rect.X = (int)position.X;
+            rect.Y = (int)position.Y;
+        }
+
         public void Update(MouseState mouse)
         {
-            if (mouse.LeftButton == ButtonState.Pressed && rect.Contains(mouse.Position))
+            if (mouse.LeftButton == ButtonState.Pressed &&
+                oldMouseState.LeftButton == ButtonState.Released &&
+                rect.Contains(mouse.Position))
             {
                 setter(!getter());
             }
+
+            oldMouseState = mouse;
         }
 
         public void Draw(SpriteBatch spriteBatch)

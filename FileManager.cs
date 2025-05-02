@@ -14,6 +14,7 @@ namespace WaveAttack
         private static Dictionary<string, Texture2D> textures = new();
         private static Dictionary<string, SpriteFont> fonts = new();
         private static Dictionary<string, SoundEffect> sounds = new();
+        private static Dictionary<string, Song> songs = new();
         public static void LoadContent(ContentManager content)
             {
                 textures["Player"] = content.Load<Texture2D>("Player");
@@ -43,12 +44,17 @@ namespace WaveAttack
                 sounds["IrelanderProbing"] = content.Load<SoundEffect>("IrelanderProbing");
                 sounds["BoneCrack"] = content.Load<SoundEffect>("BoneCrack");
                 
-
+                songs["MenuMusic"] = content.Load<Song>("Spectre - Title Screen");
+                songs["OpeningMusic"] = content.Load<Song>("Spectre - Opening");
+                songs["Level1Music"] = content.Load<Song>("Spectre - Level Music 1");
+                songs["Level2Music"] = content.Load<Song>("Spectre - Level Music 2");
+                songs["InGameMusic"] = content.Load<Song>("Escape from the Planet of the Robot Monsters - In-Game");
 
 
             }
         public static Texture2D GetTexture(string key) => textures[key];
         public static SpriteFont GetFont(string key) => fonts[key];
         public static SoundEffect GetSound(string key) => sounds[key];
+        public static Song GetSong(string key) => songs[key];
     }
 }

@@ -50,6 +50,7 @@ namespace WaveAttack
 
             spriteBatch.DrawString(font, $"HP: {player.health}/100", new Vector2(startPosition.X + 120, startPosition.Y), Color.White);
             spriteBatch.DrawString(font, $"STM: {player.stamina}/100", new Vector2(startPosition.X + 120, startPosition.Y + 30), Color.White);
+            spriteBatch.DrawString(font, $"Points: {GameManager.Instance.player.score}", new Vector2(startPosition.X, startPosition.Y - 20), Color.Yellow);
         }
     }
 }

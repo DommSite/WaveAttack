@@ -95,12 +95,6 @@ C:\Users\Admin\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\IrelanderPro
 C:\Users\Admin\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\ManGurgleDeath.xnb
 C:\Users\Admin\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\Slash.xnb
 C:\Users\Admin\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\Stab.xnb
-C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.csproj.AssemblyReference.cache
-C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.AssemblyInfoInputs.cache
-C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.AssemblyInfo.cs
-C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.csproj.CoreCompileInputs.cache
-C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.sourcelink.json
 C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\BigSword.xnb
 C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\BoneCrack.ogg
 C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\BoneCrack.xnb
@@ -186,9 +180,25 @@ C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\runtimes\win-x86\nat
 C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\runtimes\linux-x64\native\libSDL2-2.0.so.0
 C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\runtimes\osx\native\libSDL2.dylib
 C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\runtimes\win-x64\native\SDL2.dll
+C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.csproj.AssemblyReference.cache
+C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.AssemblyInfoInputs.cache
+C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.AssemblyInfo.cs
+C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.csproj.CoreCompileInputs.cache
+C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.sourcelink.json
 C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.csproj.Up2Date
 C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.dll
 C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\refint\WaveAttack.dll
 C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.pdb
 C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\WaveAttack.genruntimeconfig.cache
 C:\Users\johan\Documents\GitHub\WaveAttack\obj\Debug\net8.0\ref\WaveAttack.dll
+C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\Spectre - Level Music 1.ogg
+C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\Spectre - Level Music 1.xnb
+C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\Spectre - Level Music 2.ogg
+C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\Spectre - Level Music 2.xnb
+C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\Spectre - Opening.ogg
+C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\Spectre - Opening.xnb
+C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\Spectre - Title Screen.ogg
+C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\Spectre - Title Screen.xnb
+C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\Escape from the Planet of the Robot Monsters - In-Game.ogg
+C:\Users\johan\Documents\GitHub\WaveAttack\bin\Debug\net8.0\Content\Escape from the Planet of the Robot Monsters - In-Game.xnb

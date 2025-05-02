@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 
 namespace WaveAttack
@@ -12,6 +13,7 @@ namespace WaveAttack
         private List<Button> pauseMenuButtons;
         private List<Button> confirmMenuButtons;
         private Button backButton;
+        private Button backButton2;
         private Button ContinueButton;
         private List<ISettingsElement> settingsMenuElements;
         private SpriteFont font = FileManager.GetFont("GameFont");
@@ -25,6 +27,7 @@ namespace WaveAttack
         private string playerName = "";
         private const int MaxNameLength = 3;
         private KeyboardState previousKeyboardState;
+        private bool firstStartup = true;
 
 
     
@@ -44,97 +47,169 @@ namespace WaveAttack
 
         private void InitializeMenus()
         {
+            int startY = 50;         // Starting vertical position
+            int spacing = 40;        // Space between each setting element
+            int currentIndex = 0;
+            backButton = new Button(new Rectangle(20, 20, 120, 50), "Back", () => GameManager.Instance.ReturnToPreviousState());
+            backButton2 = new Button(new Rectangle(200, 200, 120, 50), "Back", () => GameManager.Instance.ReturnToPreviousState());
+
             mainMenuButtons = new List<Button>()
             {
-                new Button(new Rectangle(300, 200, 200, 50), "Start", () => GameManager.Instance.ChangeState(GameState.Playing)),
-                new Button(new Rectangle(300, 260, 200, 50), "Leaderboard", () => GameManager.Instance.ChangeState(GameState.Leaderboard)),
-                new Button(new Rectangle(300, 320, 200, 50), "Settings", () => GameManager.Instance.ChangeState(GameState.Settings)),
-                new Button(new Rectangle(300, 380, 200, 50), "Exit", () => GameManager.Instance.Exit())
+                new Button(Rectangle.Empty, "Start", () => GameManager.Instance.ChangeState(GameState.Playing)),
+                new Button(Rectangle.Empty, "Leaderboard", () => GameManager.Instance.ChangeState(GameState.Leaderboard)),
+                new Button(Rectangle.Empty, "Settings", () => GameManager.Instance.ChangeState(GameState.Settings)),
+                new Button(Rectangle.Empty, "Exit", () => GameManager.Instance.Exit())
             };
+            LayoutMenuButtons(mainMenuButtons);
 
             pauseMenuButtons = new List<Button>()
             {
-                new Button(new Rectangle(300, 200, 200, 50), "Continue", () => GameManager.Instance.ChangeState(GameState.Playing)),
-                new Button(new Rectangle(300, 260, 200, 50), "Leaderboard", () => GameManager.Instance.ChangeState(GameState.Leaderboard)),
-                new Button(new Rectangle(300, 320, 200, 50), "Settings", () => GameManager.Instance.ChangeState(GameState.Settings)),
-                new Button(new Rectangle(300, 380, 200, 50), "MainMenu", () => GameManager.Instance.ChangeState(GameState.ConfirmBackToMenu))
+                new Button(Rectangle.Empty, "Continue", () => GameManager.Instance.ChangeState(GameState.Playing)),
+                new Button(Rectangle.Empty, "Leaderboard", () => GameManager.Instance.ChangeState(GameState.Leaderboard)),
+                new Button(Rectangle.Empty, "Settings", () => GameManager.Instance.ChangeState(GameState.Settings)),
+                new Button(Rectangle.Empty, "MainMenu", () => GameManager.Instance.ChangeState(GameState.ConfirmBackToMenu))
             };
-
-            settingsMenuElements = new List<ISettingsElement>()
-            {
-                new Slider(new Rectangle(300, 200, 200, 10),
-                    () => GameManager.Instance.settings.Volume,
-                    val => { GameManager.Instance.settings.Volume = val; GameManager.Instance.settings.Save(); }),
-
-                new Toggle(new Rectangle(300, 250, 20, 20),
-                    "Fullscreen",
-                    () => GameManager.Instance.settings.Fullscreen,
-                    val => { GameManager.Instance.settings.Fullscreen = val; GameManager.Instance.settings.Save(); })
-            };
+            LayoutMenuButtons(pauseMenuButtons);
 
             confirmMenuButtons = new List<Button>()
             {
-                new Button(new Rectangle(300, 260, 200, 50), "Yes", () => {GameManager.Instance.ResetGame(); GameManager.Instance.ChangeState(GameState.MainMenu);}),
-                new Button(new Rectangle(300, 320, 200, 50), "No", () => {GameManager.Instance.ChangeState(GameState.Paused);}),
-                
-                
+                new Button(Rectangle.Empty, "Yes", () => { GameManager.Instance.ResetGame(); GameManager.Instance.ChangeState(GameState.MainMenu); }),
+                new Button(Rectangle.Empty, "No", () => GameManager.Instance.ChangeState(GameState.Paused))
             };
-            settingsMenuElements.Add(new ButtonAdapter(backButton));
+            LayoutMenuButtons(confirmMenuButtons);
 
-            leaderboardEntries = new List<LeaderboardEntry>()
-            {
-                new LeaderboardEntry("AAA", 15000),
-                new LeaderboardEntry("BBB", 12200),
-                new LeaderboardEntry("CCC", 9000),
-                new LeaderboardEntry("DDD", 8700),
-                new LeaderboardEntry("EEE", 5000),
-                new LeaderboardEntry("AAB", 15000),
-                
-            };
-            foreach(var entry in leaderboardEntries){
-                LeaderboardEntry.AddEntry(entry);
-            }
-            
-
-            backButton = new Button(new Rectangle(10, 10, 100, 40), "Back", () => GameManager.Instance.ReturnToPreviousState());
-
-            ContinueButton = new Button(new Rectangle((Game1.Instance.GraphicsDevice.Viewport.Width - 250) / 2,/* center horizontally*/   Game1.Instance.GraphicsDevice.Viewport.Height - 60,/* push closer to bottom*/   250,60),"Press here to Continue",() =>
+            ContinueButton = new Button(new Rectangle(0, 0, 250, 60), "Press here to Continue", () =>
             {
                 if (LeaderboardEntry.IsViableEntry(score))
-                {
                     GameManager.Instance.ChangeState(GameState.EnterName);
-                }
                 else
-                {
                     GameManager.Instance.ChangeState(GameState.MainMenu);
-                }
             });
+
+            settingsMenuElements = new List<ISettingsElement>
+            {
+                new Slider(new Rectangle(0, startY + spacing * currentIndex++, 200, 10),
+                    () => GameManager.Instance.settings.Volume,
+                    val => { GameManager.Instance.settings.Volume = val; GameManager.Instance.settings.Save(); },
+                    "Master Volume"),
+
+                new Slider(new Rectangle(0, startY + spacing * currentIndex++, 200, 10),
+                    () => GameManager.Instance.settings.SFXVolume,
+                    val => { GameManager.Instance.settings.SFXVolume = val; GameManager.Instance.settings.Save(); },
+                    "SFX Volume"),
+
+                new Toggle(new Rectangle(0, startY + spacing * currentIndex++, 20, 20),
+                    "Mute All",
+                    () => GameManager.Instance.settings.MuteAll,
+                    val => { GameManager.Instance.settings.MuteAll = val; GameManager.Instance.settings.Save(); }),
+
+                new Toggle(new Rectangle(0, startY + spacing * currentIndex++, 20, 20),
+                    "Fullscreen",
+                    () => GameManager.Instance.settings.Fullscreen,
+                    val => {
+                        GameManager.Instance.settings.Fullscreen = val;
+                        GameManager.Instance.settings.Apply(Game1.Instance._graphics);
+                        GameManager.Instance.settings.Save();
+                    }),
+
+                new ResolutionSelector(new Rectangle(0, startY + spacing * currentIndex++, 200, 30),
+                    new Point[] {
+                        new Point(800, 600),
+                        new Point(1280, 720),
+                        new Point(1600, 900),
+                        new Point(1920, 1080),
+                    },
+                    () => GameManager.Instance.settings.Resolution,
+                    val => {
+                        GameManager.Instance.settings.Resolution = val;
+                        GameManager.Instance.settings.Apply(Game1.Instance._graphics);
+                        GameManager.Instance.settings.Save();
+                    }),
+                new Slider(new Rectangle(0, startY + spacing * currentIndex++, 200, 10),
+                    () => (float)GameManager.Instance.settings.totalRounds,
+                    val => {
+                        GameManager.Instance.settings.totalRounds = (int)val;
+                        GameManager.Instance.settings.Save();
+                    },
+                    "Total Rounds: " + (int)GameManager.Instance.settings.totalRounds, 
+                    1, 9999),
+                //new ButtonAdapter(backButton2)
+            };
+            var screen = Game1.Instance.GraphicsDevice.Viewport.Bounds;
+            
+
+            // Position ContinueButton centered bottom
+            //var screen = Game1.Instance.GraphicsDevice.Viewport.Bounds;
+            ContinueButton.bounds = new Rectangle(
+                (screen.Width - ContinueButton.bounds.Width) / 2,
+                screen.Height - ContinueButton.bounds.Height - 40,
+                ContinueButton.bounds.Width,
+                ContinueButton.bounds.Height
+            );
+
+            if (settingsMenuElements != null)
+            {
+                LayoutSettingsElements(
+                    settingsMenuElements,
+                    startY: Game1.Instance.GraphicsDevice.Viewport.Height / 6,
+                    spacing: Game1.Instance.GraphicsDevice.Viewport.Height / 12
+                );
+            }
         }
 
         public void Update(GameState currentState)
         {
             MouseState mState = Mouse.GetState();
             KeyboardState kState = Keyboard.GetState();
+            MediaPlayer.Volume = GameManager.Instance.settings.Volume;
+            if(GameManager.Instance.settings.MuteAll){
+                MediaPlayer.Volume = 0;
+            }
 
             overlayAlpha = MathHelper.Clamp(overlayAlpha + ((currentState == GameState.ConfirmBackToMenu ? 1 : -1) * overlayFadeSpeed * (1f / 60f)),0f, 0.6f);
 
 
-            if (currentState == GameState.MainMenu)
+            if (currentState == GameState.MainMenu){
+                LayoutMenuButtons(mainMenuButtons);
                 mainMenuButtons.ForEach(b => b.Update(mState));
-            else if (currentState == GameState.Paused)
+                if(firstStartup){
+                    GameManager.Instance.PlaySong(FileManager.GetSong("OpeningMusic"), false);
+                    firstStartup = false;
+                }
+                else if(!firstStartup &&  MediaPlayer.State == MediaState.Stopped){
+                    GameManager.Instance.PlaySong(FileManager.GetSong("MenuMusic"));
+                }
+            }
+                
+            else if (currentState == GameState.Paused){
+                LayoutMenuButtons(pauseMenuButtons);
                 pauseMenuButtons.ForEach(b => b.Update(mState));
-            else if (currentState == GameState.ConfirmBackToMenu)
+                GameManager.Instance.PlaySong(FileManager.GetSong("MenuMusic"),true, true);
+            }
+                
+            else if (currentState == GameState.ConfirmBackToMenu){
+                LayoutMenuButtons(confirmMenuButtons);
                 confirmMenuButtons.ForEach(b => b.Update(mState));
-            else if (currentState == GameState.Leaderboard)
+                GameManager.Instance.PlaySong(FileManager.GetSong("MenuMusic"));
+            }
+                
+            else if (currentState == GameState.Leaderboard){
                 backButton.Update(mState);
+                GameManager.Instance.PlaySong(FileManager.GetSong("MenuMusic"));
+            }
+                
             else if (currentState == GameState.EnterName){
                 
             }
                 
             else if (currentState == GameState.GameOver)
                 ContinueButton.Update(mState);
-            else if (currentState == GameState.Settings)
+            else if (currentState == GameState.Settings){
                 settingsMenuElements.ForEach(e => e.Update(mState));
+                backButton.Update(mState);
+                GameManager.Instance.PlaySong(FileManager.GetSong("MenuMusic"));
+            }
+                
                 
             
         }
@@ -157,7 +232,7 @@ namespace WaveAttack
             }
             else if (this.currentState == GameState.Leaderboard)
             {
-                backButton.Draw(spriteBatch);
+                
 
                 UIHelper.DrawSplitLeaderboard(
                     spriteBatch: spriteBatch,
@@ -166,6 +241,7 @@ namespace WaveAttack
                     graphicsDevice: Game1.Instance.GraphicsDevice,
                     pixel: pixel
                 );
+                backButton.Draw(spriteBatch);
             }
             else if (currentState == GameState.EnterName){
                 UpdateNameEntry(spriteBatch);
@@ -183,10 +259,13 @@ namespace WaveAttack
                 UIHelper.DrawCenteredText(spriteBatch, font, "Game Over", new Rectangle(0, 200, screen.Width, 50), Color.White);
                 ContinueButton.Draw(spriteBatch);
             }
-            else if (currentState == GameState.Settings)
+            else if (currentState == GameState.Settings){
                 settingsMenuElements.ForEach(e => e.Draw(spriteBatch));
+                backButton.Draw(spriteBatch);
+            }
+                
            
-
+            
         }
 
         public void OnPlayerDeath(int score)
@@ -240,7 +319,7 @@ namespace WaveAttack
             previousKeyboardState = ks;
         }
 
-        private void HandleNameInput(KeyboardState currentKeyboardState)
+        /*private void HandleNameInput(KeyboardState currentKeyboardState)
         {
             // Only allow name input when not already filled up
             if (playerName.Length < MaxNameLength)
@@ -265,6 +344,46 @@ namespace WaveAttack
                 LeaderboardEntry.AddEntry(new LeaderboardEntry(playerName, score));
                 
                 GameManager.Instance.ChangeState(GameState.Leaderboard); // Go to leaderboard after submitting name
+            }
+        }*/
+        public static void LayoutSettingsElements(List<ISettingsElement> elements, int startY, int spacing, int x)
+        {
+            int y = startY;
+            foreach (var el in elements)
+            {
+                el.SetPosition(new Vector2(x, y));
+                y += spacing;
+            }
+        }
+
+
+        private void LayoutMenuButtons(List<Button> buttons, int verticalSpacing = 20)
+        {
+            var screen = Game1.Instance.GraphicsDevice.Viewport.Bounds;
+            int buttonWidth = 200;
+            int buttonHeight = 50;
+
+            int totalHeight = buttons.Count * (buttonHeight + verticalSpacing) - verticalSpacing;
+            int startY = (screen.Height - totalHeight) / 2;
+
+            for (int i = 0; i < buttons.Count; i++)
+            {
+                int x = (screen.Width - buttonWidth) / 2;
+                int y = startY + i * (buttonHeight + verticalSpacing);
+                buttons[i].bounds = new Rectangle(x, y, buttonWidth, buttonHeight);
+            }
+        }
+
+        public static void LayoutSettingsElements(List<ISettingsElement> elements, int startY, int spacing)
+        {
+            var screen = Game1.Instance.GraphicsDevice.Viewport.Bounds;
+            int x = (screen.Width - 400) / 2; // Center elements (assuming max width 400)
+
+            int y = startY;
+            foreach (var el in elements)
+            {
+                el.SetPosition(new Vector2(x, y));
+                y += spacing;
             }
         }
     }

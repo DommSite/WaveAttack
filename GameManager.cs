@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework.Input;
 using WaveAttack.Entities;
 using WaveAttack.Entities.Enemies;
 using WaveAttack;
+using System.IO;
+using Microsoft.Xna.Framework.Media;
+using System.ComponentModel;
 
 
 namespace WaveAttack
@@ -25,12 +28,27 @@ namespace WaveAttack
         private Random random = new Random();
         private TimeSpan spawnTimer = TimeSpan.Zero;
         private TimeSpan spawnInterval = TimeSpan.FromSeconds(0.25);
-        public float MasterVolume = 1;
         private GameState currentState = GameState.MainMenu;
         public MenuManager menuManager;
         private KeyboardState previousKeyboardState;
         private GraphicsDevice graphicsDevice;
         public GameState previousState;
+        
+        private Song currentSong = null;
+        //private GameState lastMusicState = GameState.None;
+        private bool restartSong = false;
+        private int round = 1;
+        private int totalRounds = 3;
+        private int enemiesPerRound = 3;
+        private int enemiesToSpawn = 0;
+        private int enemiesSpawned = 0;
+        private bool roundActive = false;
+        private bool roundTransitioning = false;
+        private TimeSpan roundDelay = TimeSpan.FromSeconds(2); // optional delay between rounds
+        private TimeSpan roundDelayTimer = TimeSpan.Zero;
+
+        
+        
 
 
 
@@ -38,6 +56,7 @@ namespace WaveAttack
         public void Initialize(Game1 game, GraphicsDevice graphicsDevice){ 
             player = new Player(new Vector2(400, 300));
             entities.Add(player);
+            settings = GameSettings.Load();
             
             hud = new HUD(player, graphicsDevice);
             menuManager = new MenuManager(graphicsDevice);
@@ -50,14 +69,76 @@ namespace WaveAttack
 
         public void Update(GameTime gameTime){
             KeyboardState keyboardState = Keyboard.GetState();
+            totalRounds = settings.totalRounds;
+            
+
             if (currentState == GameState.Playing)
             {
                 if (keyboardState.IsKeyDown(Keys.Escape) && previousKeyboardState.IsKeyUp(Keys.Escape))
                 {
                     ChangeState(GameState.Paused);
                 }
+                PlaySong(FileManager.GetSong("InGameMusic"), true, true);
+                if (!roundActive && !roundTransitioning && round <= totalRounds)
+                {
+                    Console.WriteLine("Round: " + round);
+                    enemiesToSpawn = enemiesPerRound * round;
+                    enemiesSpawned = 0;
+                    roundActive = true;
+                }
 
-                spawnTimer += gameTime.ElapsedGameTime;
+                if (roundActive && enemiesSpawned < enemiesToSpawn)
+                {
+                    spawnTimer += gameTime.ElapsedGameTime;
+                    if (spawnTimer >= spawnInterval)
+                    {
+                        SpawnRandomEnemy();
+                        enemiesSpawned++;
+                        spawnTimer = TimeSpan.Zero;
+                    }
+                }
+
+                for (int i = entities.Count - 1; i >= 0; i--)
+                {
+                    entities[i].Update(gameTime);
+                    if (!entities[i].isActive)
+                    {
+                        if (entities[i] is BaseEntity)
+                        {
+                            ((BaseEntity)entities[i]).Die();
+                        }
+                        entities.RemoveAt(i);
+                    }
+                }
+
+                bool enemiesRemaining = entities.Exists(e => e is BaseEnemy);
+                if (roundActive && !enemiesRemaining && enemiesSpawned == enemiesToSpawn)
+                {
+                    roundActive = false;
+                    roundTransitioning = true;
+                    roundDelayTimer = TimeSpan.Zero;
+                }
+
+                if (roundTransitioning)
+                {
+                    roundDelayTimer += gameTime.ElapsedGameTime;
+                    if (roundDelayTimer >= roundDelay)
+                    {
+                        round++;
+                        roundTransitioning = false;
+                        Console.WriteLine("Round: " + round);
+
+                        if (round > totalRounds)
+                        {
+                            // Game finished, show victory or loop last round
+                            Console.WriteLine("All rounds completed!");
+                            // ChangeState(GameState.GameOver); // or another state
+                        }
+                    }
+                }
+
+
+                /*spawnTimer += gameTime.ElapsedGameTime;
             
                 for (int i = entities.Count - 1; i >= 0; i--)
                 {
@@ -74,7 +155,7 @@ namespace WaveAttack
                 {
                     SpawnRandomEnemy();
                     spawnTimer = TimeSpan.Zero;
-                }
+                }*/
                 player.weapon.Update(gameTime);
             }
             else if(currentState == GameState.Paused){
@@ -238,6 +319,8 @@ namespace WaveAttack
         }
 
         public void Exit(){
+            settings.Save();
+            
             Game1.Instance.Exit();
         }
 
@@ -257,8 +340,23 @@ namespace WaveAttack
                 ChangeState(previousState);
             }     
         }
+        public void PlaySong(Song newSong, bool loop = true, bool forceStart = false)
+        {
+            if(forceStart && currentSong != newSong){
+                restartSong = true;
+            }
+            if (restartSong || currentSong != newSong)
+            {
+                MediaPlayer.Stop();
+                MediaPlayer.Play(newSong);
+                MediaPlayer.IsRepeating = loop;
+                currentSong = newSong;
+                //lastMusicState = currentState;
+                restartSong = false;
+            }
+        }
 
-
+    
 
 
 

@@ -6,7 +6,7 @@ using WaveAttack.Weapons;
 namespace WaveAttack.Entities.Enemies{
     public class GunnerEnemy : BaseEnemy
     {
-        public GunnerEnemy(Vector2 position) : base(FileManager.GetTexture("EnemySniper"), position, 0.03f, 30, 1f, 2, 150)
+        public GunnerEnemy(Vector2 position) : base(FileManager.GetTexture("EnemySniper"), position, 0.03f, 30, 1f, 2, 150, 20)
         {
             weapon = new Flintlock(this);
         }

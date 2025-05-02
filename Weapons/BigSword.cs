@@ -84,7 +84,7 @@ namespace WaveAttack.Weapons
             float rotation = currentRotation - MathHelper.PiOver2 + MathHelper.PiOver4;
             if (!isAttacking)
                 return;
-            System.Console.WriteLine(currentRotation);
+            //System.Console.WriteLine(currentRotation);
             
 
             spriteBatch.Draw(

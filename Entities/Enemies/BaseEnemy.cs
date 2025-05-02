@@ -11,14 +11,16 @@ namespace WaveAttack.Entities.Enemies
         protected float wantedDistanceFromPlayer;
         protected TimeSpan attackCooldown;
         protected TimeSpan lastAttackTime = TimeSpan.Zero;
+        protected int points;
         
 
 
 
-        public BaseEnemy(Texture2D texture, Vector2 position, float scale, int health, float speed, double attackCooldown, float wantedDistanceFromPlayer)
+        public BaseEnemy(Texture2D texture, Vector2 position, float scale, int health, float speed, double attackCooldown, float wantedDistanceFromPlayer, int points)
         : base(texture, position, scale, health, speed, 0.3f){
             this.attackCooldown = TimeSpan.FromSeconds(attackCooldown);
             this.wantedDistanceFromPlayer = wantedDistanceFromPlayer;
+            this.points = points;
         }
 
         public override void Update(GameTime gameTime){       
@@ -51,6 +53,7 @@ namespace WaveAttack.Entities.Enemies
 
         public override void Die(){
             if(isActive){
+                GameManager.Instance.player.KillEnemy(points);
                 GameManager.Instance.player.killCount++;
                 System.Console.WriteLine("Current killcount: " + GameManager.Instance.player.killCount);
                 isActive = false;

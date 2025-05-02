@@ -73,6 +73,12 @@
 /processorParam:TextureFormat=Color
 /build:EnemyStandard.png
 
+#begin Escape from the Planet of the Robot Monsters - In-Game.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Escape from the Planet of the Robot Monsters - In-Game.mp3
+
 #begin Flintlock.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -157,6 +163,30 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Slash.mp3
+
+#begin Spectre - Level Music 1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Spectre - Level Music 1.mp3
+
+#begin Spectre - Level Music 2.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Spectre - Level Music 2.mp3
+
+#begin Spectre - Opening.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Spectre - Opening.mp3
+
+#begin Spectre - Title Screen.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Spectre - Title Screen.mp3
 
 #begin Stab.mp3
 /importer:Mp3Importer
