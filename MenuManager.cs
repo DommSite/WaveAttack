@@ -80,7 +80,7 @@ namespace WaveAttack
 
             ContinueButton = new Button(new Rectangle(0, 0, 250, 60), "Press here to Continue", () =>
             {
-                if (LeaderboardEntry.IsViableEntry(score))
+                if (currentState == GameState.Success && LeaderboardEntry.IsViableEntry(score))
                     GameManager.Instance.ChangeState(GameState.EnterName);
                 else
                     GameManager.Instance.ChangeState(GameState.MainMenu);
@@ -159,6 +159,9 @@ namespace WaveAttack
 
         public void Update(GameState currentState)
         {
+            if(GameManager.Instance.player != null){
+                score = GameManager.Instance.player.score;
+            }
             MouseState mState = Mouse.GetState();
             KeyboardState kState = Keyboard.GetState();
             MediaPlayer.Volume = GameManager.Instance.settings.Volume;
@@ -208,6 +211,9 @@ namespace WaveAttack
                 settingsMenuElements.ForEach(e => e.Update(mState));
                 backButton.Update(mState);
                 GameManager.Instance.PlaySong(FileManager.GetSong("MenuMusic"));
+            }
+            else if (currentState == GameState.Success){
+                ContinueButton.Update(mState);
             }
                 
                 
@@ -262,6 +268,13 @@ namespace WaveAttack
             else if (currentState == GameState.Settings){
                 settingsMenuElements.ForEach(e => e.Draw(spriteBatch));
                 backButton.Draw(spriteBatch);
+            }
+            else if (currentState == GameState.Success)
+            {
+                var screen = Game1.Instance.GraphicsDevice.Viewport.Bounds;
+                spriteBatch.Draw(overlayTexture, screen, Color.Black * 0.8f);
+                UIHelper.DrawCenteredText(spriteBatch, font, "You Win", new Rectangle(0, 200, screen.Width, 50), Color.White);
+                ContinueButton.Draw(spriteBatch);
             }
                 
            

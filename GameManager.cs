@@ -132,6 +132,7 @@ namespace WaveAttack
                         {
                             // Game finished, show victory or loop last round
                             Console.WriteLine("All rounds completed!");
+                            ChangeState(GameState.Success);
                             // ChangeState(GameState.GameOver); // or another state
                         }
                     }

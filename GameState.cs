@@ -12,6 +12,7 @@ namespace WaveAttack
         GameOver,
         EnterName,
         None,
+        Success,
 
     }
 }
